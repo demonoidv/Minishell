@@ -6,7 +6,7 @@
 #    By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/08/20 14:41:19 by vsporer           #+#    #+#              #
-#    Updated: 2017/09/16 02:57:57 by vsporer          ###   ########.fr        #
+#    Updated: 2017/09/16 17:34:02 by vsporer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,18 +15,19 @@ LIBFT =			libft/libft.a
 
 PATH_LIBFT =	libft/
 PATH_SRC =		src/
-PATH_BUILTINS =	$(PATH_SRC)builtins/
+#PATH_BUILTINS =	$(PATH_SRC)builtins/
 PATH_OBJ =		objs/
 
 CC =			gcc -Wall -Werror -Wextra
 INC =			-I includes/ -I libft/includes/
 
-SRC =			$(PATH_SRC)main.c
+SRC =			$(PATH_SRC)main.c\
+				$(PATH_SRC)wait_cmd.c
 
-BUILTINS =		$(PATH_BUILTINS)
+#BUILTINS =		$(PATH_BUILTINS)
 
 OBJ =			$(patsubst $(PATH_SRC)%.c, $(PATH_OBJ)%.o, $(SRC))
-				$(patsubst $(PATH_BUILTINS)%.c, $(PATH_OBJ)%.o, $(BUILTINS))
+#				$(patsubst $(PATH_BUILTINS)%.c, $(PATH_OBJ)%.o, $(BUILTINS))
 
 all: $(NAME)
 
@@ -43,10 +44,10 @@ $(PATH_OBJ)%.o: $(PATH_SRC)%.c
 	@mkdir -p $(@D)
 	@$(CC) $(INC) -c $< -o $@
 
-$(PATH_OBJ)%.o: $(PATH_BUILTINS)%.c
-	@echo "Compiling $< to $@"
-	@mkdir -p $(@D)
-	@$(CC) $(INC) -c $< -o $@
+#$(PATH_OBJ)%.o: $(PATH_BUILTINS)%.c
+#	@echo "Compiling $< to $@"
+#	@mkdir -p $(@D)
+#	@$(CC) $(INC) -c $< -o $@
 
 clean:
 	@rm -rf $(PATH_OBJ)
