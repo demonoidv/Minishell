@@ -6,7 +6,7 @@
 /*   By: vsporer <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/07 13:35:39 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/10 03:32:02 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/09/17 20:49:19 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,6 @@ int					get_next_line(const int fd, char **line);
 int					ft_printf(const char *format, ...);
 void				ft_swap_ptr(void **p1, void **p2);
 size_t				ft_nbrlen(int n);
+char				**ft_split_whitespaces(char *str);
 
 #endif

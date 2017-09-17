@@ -6,27 +6,44 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 16:02:30 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/16 18:14:48 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/09/17 23:21:00 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	wait_cmd(char **cmd)
+static void		msh_prompt(char ***env);
 {
-	char	buff[2];
+	int		i;
+	char	*pwd;
 
-	ft_putstr("$>");
-	while (read(0, buff, BUFF_SIZE) >= 0 && buff[0] != '\n')
+	if ((pwd = search_var(env, "PWD")))
 	{
-		ft_putnbr((int)buff[0]);
-		*cmd = ft_strjoin_free(*cmd, buff, 1);
-		if (!ft_strcmp(*cmd, "exit"))
-		{
-			ft_strdel(cmd);
-			exit(0);
-		}
-		ft_strdel(cmd);
+		i = ft_strlen(pwd);
+		while (i >= 0 && pwd[i] != '/')
+			i--;
+		if (pwd[i] == '/' && ft_strcmp(pwd, "/"))
+			i++;
+		ft_printf("\033[42m%s %C ", &(pwd[i]), 50377);
+	}
+}
+
+void			wait_cmd(char **cmd)
+{
+	int		i;
+	char	*line;
+	char	***env;
+
+	i = 0;
+	line = NULL;
+	env = get_env();
+	ft_putstr();
+	if (get_next_line(0, &line))
+	{
+		*cmd = ft_strtrim(line);
+
+		if (ft_countchar())
 	}
 	wait_cmd(cmd);
+	ft_strdel(cmd);
 }

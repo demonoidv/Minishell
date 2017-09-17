@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   search_var.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/16 15:46:28 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/17 21:08:35 by vsporer          ###   ########.fr       */
+/*   Created: 2017/09/17 21:09:38 by vsporer           #+#    #+#             */
+/*   Updated: 2017/09/17 21:13:10 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		main(int ac, char **av)
+char	*search_var(char ***env, char *name)
 {
-	char	*cmd;
+	int		i;
 
-	cmd = NULL;
-	av = NULL;
-	if (ac != 1)
-		return (1);
-	wait_cmd(&cmd);
-	return (0);
+	i = 0;
+	while (env[i])
+	{
+		if (!ft_strcmp(name, env[i][0]))
+			return (env[i][1]);
+		i++;
+	}
+	return (NULL);
 }

@@ -1,25 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/16 15:46:28 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/17 21:08:35 by vsporer          ###   ########.fr       */
+/*   Created: 2017/09/17 17:38:14 by vsporer           #+#    #+#             */
+/*   Updated: 2017/09/17 18:44:53 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		main(int ac, char **av)
+static int	countvar(char **env)
 {
-	char	*cmd;
+	int		i;
 
-	cmd = NULL;
-	av = NULL;
-	if (ac != 1)
-		return (1);
-	wait_cmd(&cmd);
-	return (0);
+	i = 0;
+	while (env[i])
+		i++;
+	return (i);
+}
+
+char		***get_env(void)
+{
+	int		i;
+	char	***env;
+
+	i = 0;
+	env = (char***)malloc(sizeof(char**) * (countvar(environ) + 1))
+	while (environ[i])
+	{
+		env[i] = ft_strsplit(environ[i], '=');
+		i++;
+	}
+	env[i] = NULL;
+	return (env);
 }

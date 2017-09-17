@@ -6,7 +6,7 @@
 #    By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/08/20 14:41:19 by vsporer           #+#    #+#              #
-#    Updated: 2017/09/16 17:34:02 by vsporer          ###   ########.fr        #
+#    Updated: 2017/09/17 20:53:06 by vsporer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ CC =			gcc -Wall -Werror -Wextra
 INC =			-I includes/ -I libft/includes/
 
 SRC =			$(PATH_SRC)main.c\
+				$(PATH_SRC)get_env.c\
 				$(PATH_SRC)wait_cmd.c
 
 #BUILTINS =		$(PATH_BUILTINS)
