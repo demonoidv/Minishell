@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/24 16:59:10 by vsporer           #+#    #+#             */
-/*   Updated: 2016/11/24 17:20:55 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/09/22 20:01:30 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ static char		*ft_getword(char const *s, char c, size_t i)
 	j = 0;
 	while (s[i] == c)
 		i++;
-	while (s[i + j] != c)
+	while (s[i + j] && s[i + j] != c)
 		j++;
 	if ((word = (char*)malloc(sizeof(char) * (j + 1))))
 	{
 		j = 0;
-		while (s[i + j] != c)
+		while (s[i + j] && s[i + j] != c)
 		{
 			word[j] = s[i + j];
 			j++;
@@ -78,7 +78,7 @@ char			**ft_strsplit(char const *s, char c)
 			if (!(splitw[index] = ft_getword(s, c, i)))
 				return (NULL);
 			index++;
-			while (s[i] != c)
+			while (s[i] && s[i] != c)
 				i++;
 		}
 		splitw[index] = NULL;

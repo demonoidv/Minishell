@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/17 17:38:14 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/17 18:44:53 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/09/22 17:05:24 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,19 @@ static int	countvar(char **env)
 
 	i = 0;
 	while (env[i])
+	{
 		i++;
+	}
 	return (i);
 }
 
-char		***get_env(void)
+char		***get_env(char **environ)
 {
 	int		i;
 	char	***env;
 
 	i = 0;
-	env = (char***)malloc(sizeof(char**) * (countvar(environ) + 1))
+	env = (char***)malloc(sizeof(char**) * (countvar(environ) + 1));
 	while (environ[i])
 	{
 		env[i] = ft_strsplit(environ[i], '=');
