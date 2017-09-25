@@ -6,52 +6,53 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/23 17:19:16 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/25 04:27:37 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/09/25 18:35:15 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
-void	insert_char(char **str, int pos)
-{
-	int		oldpos;
-
-	oldpos = pos;
-	if (*str[pos])
-	{
-		
-	}
-}
-*/
-
-char	*del_char(char *cmd, int pos)
-{
-	char	*tmp;
-
-	if (pos > 0)
-	{
-		tmp = ft_strdup(&cmd[pos]);
-		cmd[pos - 1] = '\0';
-		cmd = ft_strjoin_free(cmd, tmp, 3);
-	}
-	return (cmd);
-}
 
 void	clean_line(char *cmd, int pos)
 {
 	int		len;
 
 	len = ft_strlen(cmd);
-	while (pos++ < len)
-		ft_putchar(127);
-	while (--pos > 0)
+	while (pos <= len)
 	{
 		ft_putchar(127);
-		ft_putstr("\b\b");
+		pos++;
+	}
+	while (pos > 0)
+	{
+		ft_putchar('\b');
+		ft_putchar(127);
+		ft_putchar('\b');
+		pos--;
 	}
 }
-
+/*
 int		check_escape(char *line)
+{
+	int		i;
+	int		count_bs;
+
+	count_bs = 0;
+	if (line)
+	{
+		i = ft_strlen(line);
+		if (line[i])
+		{
+			while (i >= 0)
+			{
+				if (line[--i] == '\\')
+					count_bs++;
+			}
+		}
+	}
+	return (count_bs % 2);
+}
+*/
+char	check_escape(char *line)
 {
 	int		i;
 	int		count_bs;

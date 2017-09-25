@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 16:02:30 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/25 04:33:45 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/09/25 18:35:18 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,32 +31,6 @@ static void		msh_prompt(char ***env)
 		ft_putstr("\033[32m=>\033[0m ");
 }
 
-/*
-static char		**get_cmd_line(void)
-{
-	char	*line;
-	char	*lcmd;
-	char	*quote;
-	char	*end_quote;
-
-	lcmd = NULL;
-	get_next_line(0, &line);
-	if ((quote = ft_strchr(line, '"')) && !check_quote(line, quote - line))
-	{
-		while (!ft_strchr(quote + 1, '"') || ((end_quote = \
-		ft_strchr(quote + 1, '"')) && check_quote(line, end_quote - line)))
-		{
-			ft_putstr("quote> ");
-			get_next_line(0, &line);
-			quote = line - 1;
-			lcmd = ft_strjoin_free(lcmd, line, 3);
-		}
-		return (ft_split_whitespaces(lcmd));
-	}
-	return (ft_split_whitespaces(line));
-}
-*/
-
 static void		set_term_param(int mode)
 {
 	struct termios			term;
@@ -79,60 +53,32 @@ static void		set_term_param(int mode)
 static char		*get_cmd_line(void)
 {
 	int		i;
-	int		len;
 	char	buff[2];
 	char	*cmd;
 
 	i = 0;
-	len = 0;
 	set_term_param(CMD);
 	cmd = NULL;
 	ft_bzero(buff, 2);
-	while (read(0, buff, 1))
+	while (buff[0] != '\n' && read(0, buff, 1))
 	{
-//			if (buff[0] == '\033' && read(0, buff, 1) && buff[0] == '[' && read(0, buff, 1) && buff[0] == 'D')
-		if (buff[0] == '\033')
-			i = event_manager(&cmd, i);
-		else
+		if ((buff[0] >= 1 && buff[0] <= 6) || (buff[0] >= 14 && buff[0] <= 31)\
+		|| buff[0] == 127)
+			i = event_manager(&cmd, i, (char*)buff);
+		else if (buff[0] != '\n')
 		{
-			if (buff[0] == 127 && i > 0 && cmd)
-			{
-				clean_line(cmd, i);
-				cmd = del_char(cmd, i);
-				ft_putstr(cmd);
-				len = ft_strlen(cmd);
-				i--;
-				while (len > i)
-				{
-					ft_putchar('\b');
-					len--;
-				}
-			}
-			else if (buff[0] != 127)
-				ft_putchar(buff[0]);
-/*			cmd = ft_addchar(&cmd, 1);
-			if (i && (buff[0] == ' ' || buff[0] == '\t'))
-			{
-				cmd = ft_addstrtab(&cmd, 1);
-				cmd[++i] = NULL;
-			}
-			while (buff[0] == ' ' || buff[0] == '\t')
-				read(0, buff, 1);
-			if ((buff[0] == '\'' || buff[0] == '"') && \
-			!check_escape(cmd[i]))
-				cmd = get_quote(cmd, i, buff[0]);*/
-			if (buff[0] != '\n' && buff[0] != '\033' && buff[0] != 127)
-			{
-				if (cmd && cmd[i])
-					cmd[i] = buff[0];
-				else
-					cmd = ft_strjoin_free(cmd, (char*)buff, 1);
-				i++;
-			}
-			else if (buff[0] == '\n')
-				return (cmd);
+			ft_putchar(buff[0]);
+			if (cmd && cmd[i])
+				cmd[i] = buff[0];
+			else
+				cmd = ft_strjoin_free(cmd, (char*)buff, 1);
+			i++;
 		}
+		else
+			buff[0] = check_escape(cmd);
 	}
+	ft_putstr("\v\r");
+	set_term_param(DEFAULT);
 	return (cmd);
 }
 

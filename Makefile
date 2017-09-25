@@ -6,7 +6,7 @@
 #    By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/08/20 14:41:19 by vsporer           #+#    #+#              #
-#    Updated: 2017/09/25 00:36:23 by vsporer          ###   ########.fr        #
+#    Updated: 2017/09/25 18:00:20 by vsporer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRC =			$(PATH_SRC)main.c\
 				$(PATH_SRC)tools.c\
 				$(PATH_SRC)search_var.c\
 				$(PATH_SRC)event_manager.c\
+				$(PATH_SRC)edit_line.c\
 				$(PATH_SRC)wait_cmd.c
 
 #BUILTINS =		$(PATH_BUILTINS)
