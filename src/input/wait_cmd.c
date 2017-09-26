@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 16:02:30 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/26 18:55:55 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/09/27 00:50:26 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ void			wait_cmd(char ***env)
 {
 	char	quote;
 	char	*cmdline;
+	char	**cmdtab;
 
 	quote = DEFAULT;
 	msh_prompt(search_var(env, "PWD"), quote);
@@ -110,9 +111,11 @@ void			wait_cmd(char ***env)
 		cmdline = get_cmd_quote(cmdline, quote);
 	if (cmdline && cmdline[0])
 	{
-		if (!ft_strcmp(cmdline, "exit"))
+		cmdtab = line_to_tab(cmdline);
+		ft_strdel(&cmdline);
+		if (cmdtab[0] && !ft_strcmp(cmdtab[0], "exit"))
 		{
-			ft_strdel(&cmdline);
+			ft_strdel(&cmdtab[0]);
 			exit(0);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/23 17:19:16 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/26 18:56:12 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/09/26 22:28:50 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,24 @@ char		check_escape(char *line)
 		i++;
 	}
 	return (0);
+}
+
+char		**add_one_str(char **tab)
+{
+	int		i;
+	char	**new;
+
+	i = 1;
+	while (tab && tab[i])
+		i++;
+	if ((new = (char**)malloc(sizeof(char*) * (i + 1))))
+	{
+		new[i] = NULL;
+		new[i - 1] = NULL;
+		while (tab && --i >= 0)
+			new[i] = tab[i];
+		ft_memdel((void**)&tab);
+		tab = new;
+	}
+	return (tab);
 }
