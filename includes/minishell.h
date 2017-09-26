@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 15:47:07 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/25 18:35:03 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/09/26 18:55:23 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,19 @@
 
 # define CMD 1
 # define DEFAULT 0
+# define CHECK 1
+# define SET 2
+# define QUOTE '\''
+# define DQUOTE '"'
 
-//int		check_escape(char *line);
+int		msh_error(int nbr, int mode);
 int		event_manager(char **cmd, int pos, char *c);
 void	wait_cmd(char ***env);
 void	clean_line(char *cmd, int pos);
 char	***get_env(char **environ);
-char	**get_quote(char **cmd, int pos, char quote);
-char	**ft_addstrtab(char ***tab, int more);
-char	*ft_addchar(char **str, int more);
 char	*search_var(char ***env, char *name);
 char	*del_char(char *cmd, int pos);
 char	*del_frontchar(char *cmd, int pos);
-int		check_escape(char *line);
+char	check_escape(char *line);
 
 #endif
