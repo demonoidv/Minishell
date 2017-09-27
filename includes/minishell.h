@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 15:47:07 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/27 00:26:12 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/09/27 14:12:04 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,33 @@
 # define DQUOTE_MOD 4
 # define QUOTE_MOD 2
 # define ESC_MOD 1
+# define CMD_MAX 50
+# define PREV_CMD 1
+# define NEXT_CMD 2
+# define DEL_CMD 3
 
-int		msh_error(int nbr, int mode);
-int		event_manager(char **cmd, int pos, char *c);
-void	wait_cmd(char ***env);
-void	clean_line(char *cmd, int pos);
-char	***get_env(char **environ);
-char	**add_one_str(char **tab);
-char	**line_to_tab(char *line);
-char	*search_var(char ***env, char *name);
-char	*del_char(char *cmd, int pos);
-char	*del_frontchar(char *cmd, int pos);
-char	check_escape(char *line);
+typedef struct		s_dlist
+{
+	char			*cmd;
+	struct s_dlist	*prev;
+	struct s_dlist	*next;
+}					t_dlist;
+
+int			msh_error(int nbr, int mode);
+int			event_manager(char **cmd, int pos, char *c);
+void		wait_cmd(char ***env);
+void		clean_line(char *cmd, int pos);
+void		prev_cmd(char **cmd, int mode);
+void		add_dlist(t_dlist **adlist, t_dlist *new);
+void		del_dlist(t_dlist **todel);
+void		up_dlist(t_dlist *toup);
+char		***get_env(char **environ);
+char		**add_one_str(char **tab);
+char		**line_to_tab(char *line);
+char		*search_var(char ***env, char *name);
+char		*del_char(char *cmd, int pos);
+char		*del_frontchar(char *cmd, int pos);
+char		check_escape(char *line);
+t_dlist		*new_dlist(const char *cmd);
 
 #endif

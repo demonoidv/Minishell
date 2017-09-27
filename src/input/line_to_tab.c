@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 21:59:45 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/27 00:50:03 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/09/27 16:56:18 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,18 @@ static int		get_clean_str(char *line, char **str)
 	while (line[i] && ((line[i] != ' ' && line[i] != '\t') || (mode & 6)))
 	{
 		if (line[i] == '\\' && !(mode & ESC_MOD))
-			mode = (mode & ESC_MOD);
-		else if (line[i] == '\\')
-		{
-			*str = add_char(*str, &(line[i]));
-			mode = (mode ^ ESC_MOD);
-		}
+			mode = (mode | ESC_MOD);
 		else if (line[i] == '"' && !(mode & ESC_MOD) && !(mode & QUOTE_MOD))
 			mode = mode ^ DQUOTE_MOD;
 		else if (line[i] == '\'' && !(mode & ESC_MOD) && !(mode & DQUOTE_MOD))
 			mode = mode ^ QUOTE_MOD;
 		else if (line[i] != '\n' || (line[i] == '\n' && !(mode & ESC_MOD)))
-			*str = add_char(*str, &(line[i]));
+		{
+			if (line[i])
+				*str = add_char(*str, &(line[i]));
+			if (mode & ESC_MOD)
+				mode = (mode ^ ESC_MOD);
+		}
 		i++;
 	}
 	return (i - 1);
@@ -64,7 +64,8 @@ char			**line_to_tab(char *line)
 		if (line[i] != ' ' && line[i] != '\t')
 		{
 			tab = add_one_str(tab);
-			i = get_clean_str(&(line[i]), &(tab[j]));
+			tab[j] = NULL;
+			i += get_clean_str(&(line[i]), &(tab[j]));
 			j++;
 		}
 		i++;

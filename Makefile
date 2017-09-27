@@ -6,7 +6,7 @@
 #    By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/08/20 14:41:19 by vsporer           #+#    #+#              #
-#    Updated: 2017/09/27 00:19:56 by vsporer          ###   ########.fr        #
+#    Updated: 2017/09/27 14:11:32 by vsporer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,8 @@ INPUT =				$(PATH_INPUT)wait_cmd.c\
 					$(PATH_INPUT)edit_line.c\
 					$(PATH_INPUT)event_manager.c\
 					$(PATH_INPUT)line_to_tab.c\
+					$(PATH_INPUT)list.c\
+					$(PATH_INPUT)prev_cmd.c\
 					$(PATH_INPUT)tools.c
 
 #BUILTINS =			$(PATH_BUILTINS)
