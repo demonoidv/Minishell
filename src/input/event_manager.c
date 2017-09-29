@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/24 23:28:03 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/27 16:07:21 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/09/28 23:52:19 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,8 @@ static int	flitch_event(char *event, char **cmd, int pos)
 			prev_cmd(cmd, PREV_CMD);
 		else
 			prev_cmd(cmd, NEXT_CMD);
-		if (*cmd)
-		{
-			ft_putstr(*cmd);
-			pos = ft_strlen(*cmd);
-		}
+		ft_putstr(*cmd);
+		pos = ft_strlen(*cmd);
 	}
 	else if (!ft_strcmp(event, "\033[C") && *cmd && (*cmd)[pos])
 	{

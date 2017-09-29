@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 12:59:29 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/27 15:50:13 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/09/29 14:40:11 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,21 +32,33 @@ static void		del_cmd(t_dlist **dlist, int mode)
 		del_dlist(&tmp);
 }
 
-void			prev_cmd(char **cmd, int mode)
+static void		add_cmd(t_dlist **dlist, char *cmd, int mode)
 {
-	static int		nbcmd;
-	static t_dlist	*dlist;
+	static int	nbcmd;
 
-	if (*cmd && **cmd && mode == DEFAULT)
+	if (cmd && *cmd && mode == DEFAULT)
 	{
-		if (dlist && !ft_strcmp(dlist->cmd, *cmd))
+		if (*dlist && (*dlist)->cmd && !ft_strcmp((*dlist)->cmd, cmd))
 			up_dlist(dlist);
 		else
 		{
-			add_dlist(&dlist, new_dlist(*cmd));
+			add_dlist(dlist, new_dlist(cmd));
 			nbcmd++;
 		}
 	}
+	if (nbcmd > CMD_MAX || mode == DEL_CMD)
+	{
+		del_cmd(dlist, mode);
+		nbcmd = mode == DEL_CMD ? 0 : nbcmd - 1;
+	}
+}
+
+void			prev_cmd(char **cmd, int mode)
+{
+	static t_dlist	*dlist;
+
+	if (mode == DEFAULT || mode == DEL_CMD)
+		add_cmd(&dlist, *cmd, mode);
 	else if (dlist && mode == PREV_CMD)
 	{
 		if (dlist->prev)
@@ -58,10 +70,5 @@ void			prev_cmd(char **cmd, int mode)
 		if (dlist->next)
 			dlist = dlist->next;
 		*cmd = ft_strdup(dlist->cmd);
-	}
-	if (nbcmd > CMD_MAX || mode == DEL_CMD)
-	{
-		del_cmd(&dlist, mode);
-		nbcmd = mode == DEL_CMD ? 0 : nbcmd - 1;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 12:22:02 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/27 16:00:44 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/09/29 14:29:57 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_dlist		*new_dlist(const char *cmd)
 	if ((new = (t_dlist*)malloc(sizeof(t_dlist))))
 	{
 		new->cmd = ft_strdup(cmd);
+		new->curr = 0;
 		new->prev = NULL;
 		new->next = NULL;
 	}
@@ -28,17 +29,27 @@ t_dlist		*new_dlist(const char *cmd)
 void		add_dlist(t_dlist **adlist, t_dlist *new)
 {
 	if (!(*adlist))
+	{
 		*adlist = new;
+		add_dlist(adlist, new_dlist(NULL));
+		(*adlist)->curr = 1;
+	}
 	else if (new)
 	{
+		if ((*adlist)->prev && ((*adlist)->curr))
+			*adlist = (*adlist)->prev;
+		while ((*adlist)->next && !((*adlist)->next->curr))
+			*adlist = (*adlist)->next;
 		if ((*adlist)->next)
 		{
 			new->next = (*adlist)->next;
-			(*adlist)->next->prev = new;
+			new->next->prev = new;
 		}
 		(*adlist)->next = new;
 		new->prev = (*adlist);
 		*adlist = new;
+		if ((*adlist)->next && (*adlist)->next->curr)
+			*adlist = (*adlist)->next;
 	}
 }
 
@@ -57,18 +68,45 @@ void		del_dlist(t_dlist **todel)
 	}
 }
 
-void		up_dlist(t_dlist *toup)
+void		add_current(t_dlist **dlist, char **current)
 {
 	t_dlist		*tmp;
 
-	tmp = toup;
-	while (tmp->next)
-		tmp = tmp->next;
-	if (toup->next)
-		toup->next->prev = toup->prev;
-	if (toup->prev)
-		toup->prev->next = toup->next;
-	tmp->next = toup;
-	toup->prev = tmp;
-	toup->next = NULL;
+	tmp = *dlist;
+	if (tmp && tmp->cmd && ft_strcmp(tmp->cmd, *current))
+	{
+		while (tmp->next && !(tmp->curr))
+			tmp = tmp->next;
+		ft_strdel(&(tmp->cmd));
+		tmp->cmd = ft_strdup(*current);
+	}
+	ft_strdel(current);
+}
+
+void		up_dlist(t_dlist **toup)
+{
+	t_dlist		*tmp;
+
+	tmp = *toup;
+	if (tmp->next && !(tmp->next->curr))
+	{
+		if (tmp->prev && !(tmp->curr))
+			tmp = tmp->prev;
+		while (tmp->next && !(tmp->next->curr))
+			tmp = tmp->next;
+		if ((*toup)->next)
+			(*toup)->next->prev = (*toup)->prev;
+		if ((*toup)->prev)
+			(*toup)->prev->next = (*toup)->next;
+		(*toup)->next = tmp->next;
+		if ((*toup)->next)
+			(*toup)->next->prev = *toup;
+		tmp->next = *toup;
+		(*toup)->prev = tmp;
+		if ((*toup)->next && (*toup)->next->curr)
+		{
+			*toup = (*toup)->next;
+			ft_strdel(&((*toup)->cmd));
+		}
+	}
 }
