@@ -6,32 +6,40 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/23 17:19:16 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/26 22:28:50 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/09/30 15:28:56 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void		clean_line(char *cmd, int pos)
+unsigned long	get_cursor_pos(void)
 {
-	int		len;
+	int				i;
+	char			buff[10];
+	unsigned long	pos;
 
-	len = ft_strlen(cmd);
-	while (pos <= len + 1)
+	i = 0;
+	pos = 0;
+	ft_bzero(buff, 10);
+	ft_putstr("\033[6n");
+	if (read(0, buff, 2) != -1 && !ft_strcmp(buff, "\033["))
 	{
-		ft_putchar(127);
-		pos++;
+		ft_bzero(buff, 10);
+		while (read(0, &(buff[i]), 1) != -1 && buff[i] != 'R')
+		{
+			if (buff[i] == ';')
+			{
+				pos = (ft_atoi(buff) << 16);
+				i = -1;
+			}
+			i++;
+		}
+		pos += ft_atoi(buff);
 	}
-	while (pos >= 0)
-	{
-		ft_putstr("\033[D");
-		ft_putchar(127);
-		if (--pos)
-			ft_putstr("\033[D");
-	}
+	return (pos);
 }
 
-static int	search_end_quote(char *line, int pos, char quote)
+static int		search_end_quote(char *line, int pos, char quote)
 {
 	int		count_bs;
 
@@ -54,7 +62,7 @@ static int	search_end_quote(char *line, int pos, char quote)
 	return (0);
 }
 
-char		check_escape(char *line)
+char			check_escape(char *line)
 {
 	int		i;
 	char	quote;
@@ -83,7 +91,7 @@ char		check_escape(char *line)
 	return (0);
 }
 
-char		**add_one_str(char **tab)
+char			**add_one_str(char **tab)
 {
 	int		i;
 	char	**new;

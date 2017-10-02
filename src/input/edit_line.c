@@ -6,13 +6,13 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/25 15:18:46 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/25 18:01:36 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/09/30 15:44:20 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*del_char(char *cmd, int pos)
+char	*del_char(char *cmd, int pos, unsigned long curs)
 {
 	int		len;
 	char	*tmp;
@@ -22,7 +22,7 @@ char	*del_char(char *cmd, int pos)
 		tmp = ft_strdup(&cmd[pos]);
 		cmd[pos - 1] = '\0';
 		cmd = ft_strjoin_free(cmd, tmp, 3);
-		clean_line(cmd, pos);
+		clean_line(cmd, curs, DEFAULT);
 		ft_putstr(cmd);
 		len = ft_strlen(cmd);
 		while (len >= pos)
@@ -34,7 +34,7 @@ char	*del_char(char *cmd, int pos)
 	return (cmd);
 }
 
-char	*del_frontchar(char *cmd, int pos)
+char	*del_frontchar(char *cmd, int pos, unsigned long curs)
 {
 	int		len;
 	char	*tmp;
@@ -44,7 +44,7 @@ char	*del_frontchar(char *cmd, int pos)
 		tmp = ft_strdup(&cmd[pos + 1]);
 		cmd[pos] = '\0';
 		cmd = ft_strjoin_free(cmd, tmp, 3);
-		clean_line(cmd, pos);
+		clean_line(cmd, curs, DEFAULT);
 		ft_putstr(cmd);
 		len = ft_strlen(cmd);
 		while (len > pos)

@@ -6,18 +6,19 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 16:02:30 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/29 14:19:42 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/09/30 15:42:19 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <termios.h>
 
-static void		msh_prompt(char *pwd, char mode)
+static unsigned long	msh_prompt(char mode)
 {
 	int		i;
+	char	*pwd;
 
-	if (mode == DEFAULT && pwd)
+	pwd = NULL;
+	if (mode == DEFAULT && (pwd = getcwd(pwd, 0)))
 	{
 		i = ft_strlen(pwd);
 		while (i >= 0 && pwd[i] != '/')
@@ -34,42 +35,23 @@ static void		msh_prompt(char *pwd, char mode)
 		ft_putstr("> ");
 	else
 		ft_putstr("\033[32m=>\033[0m ");
+	return (get_cursor_pos());
 }
 
-static void		set_term_param(int mode)
-{
-	struct termios			term;
-	static struct termios	save;
-
-	if (mode == CMD && !tcgetattr(0, &term))
-	{
-		save = term;
-		if (term.c_lflag & ECHO)
-			term.c_lflag = term.c_lflag ^ ECHO;
-		if (term.c_lflag & ICANON)
-			term.c_lflag = term.c_lflag ^ ICANON;
-		term.c_cc[VMIN] = 1;
-	}
-	else if (mode == DEFAULT)
-		term = save;
-	tcsetattr(0, TCSANOW, &term);
-}
-
-static char		*get_cmd_line(void)
+static char			*get_cmd_line(unsigned long curs)
 {
 	int		i;
 	char	buff[2];
 	char	*cmd;
 
 	i = 0;
-	set_term_param(CMD);
 	cmd = NULL;
 	ft_bzero(buff, 2);
 	while (buff[0] != '\n' && read(0, buff, 1))
 	{
 		if ((buff[0] >= 1 && buff[0] <= 6) || (buff[0] >= 14 && buff[0] <= 31)\
 		|| buff[0] == 127)
-			i = event_manager(&cmd, i, (char*)buff);
+			i = event_manager(&cmd, i, (char*)buff, curs);
 		else if (buff[0] != '\n')
 		{
 			ft_putchar(buff[0]);
@@ -81,34 +63,38 @@ static char		*get_cmd_line(void)
 		}
 	}
 	ft_putstr("\v\r");
-	set_term_param(DEFAULT);
 	return (cmd);
 }
 
-static char		*get_cmd_quote(char *cmd, char quote)
+static char			*get_cmd_quote(char *cmd, char quote)
 {
-	char	*tmp;
+	char			*tmp;
+	unsigned long	curs;
 
 	tmp = NULL;
-	msh_prompt(NULL, quote);
-	tmp = get_cmd_line();
+	curs = msh_prompt(quote);
+	tmp = get_cmd_line(curs);
 	cmd = ft_strjoin_free(cmd, "\n", 1);
 	if (tmp)
 		cmd = ft_strjoin_free(cmd, tmp, 3);
 	return (cmd);
 }
 
-void			wait_cmd(char ***env)
+void				wait_cmd(char ***env)
 {
-	char	quote;
-	char	*cmdline;
-	char	**cmdtab;
+	char			quote;
+	char			*cmdline;
+	char			**cmdtab;
+	unsigned long	curs;
 
 	quote = DEFAULT;
-	msh_prompt(search_var(env, "PWD"), quote);
-	cmdline = get_cmd_line();
+	set_term_param(CMD);
+	curs = msh_prompt(quote);
+	cmdline = get_cmd_line(curs);
 	while ((quote = check_escape(cmdline)))
 		cmdline = get_cmd_quote(cmdline, quote);
+	set_term_param(DEFAULT);
+	clean_line(NULL, 0, 1);
 	if (cmdline && cmdline[0])
 	{
 		prev_cmd(&cmdline, DEFAULT);
