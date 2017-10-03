@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 16:02:30 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/30 15:42:19 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/03 01:46:14 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,13 @@ static unsigned long	msh_prompt(char mode)
 	return (get_cursor_pos());
 }
 
+static void			new_cmd_line(char *cmd, unsigned long curs)
+{
+	clean_line(cmd, curs, DEFAULT);
+	ft_putstr(cmd);
+	ft_putstr("\v\r");
+}
+
 static char			*get_cmd_line(unsigned long curs)
 {
 	int		i;
@@ -54,15 +61,18 @@ static char			*get_cmd_line(unsigned long curs)
 			i = event_manager(&cmd, i, (char*)buff, curs);
 		else if (buff[0] != '\n')
 		{
-			ft_putchar(buff[0]);
-			if (cmd && cmd[i])
-				cmd[i] = buff[0];
-			else
+			if (buff[0] != '\t' || !cmd || (cmd && !cmd[i]))
+				ft_putchar(buff[0]);
+			if (cmd && cmd[i] && buff[0] != '\t')
+				cmd[i++] = buff[0];
+			else if (!cmd || (cmd && !cmd[i]))
+			{
 				cmd = ft_strjoin_free(cmd, (char*)buff, 1);
-			i++;
+				i++;
+			}
 		}
 	}
-	ft_putstr("\v\r");
+	new_cmd_line(cmd, curs);
 	return (cmd);
 }
 
@@ -73,7 +83,7 @@ static char			*get_cmd_quote(char *cmd, char quote)
 
 	tmp = NULL;
 	curs = msh_prompt(quote);
-	tmp = get_cmd_line(curs);
+	tmp = get_cmd_line((curs | NO_HISTORY));
 	cmd = ft_strjoin_free(cmd, "\n", 1);
 	if (tmp)
 		cmd = ft_strjoin_free(cmd, tmp, 3);
@@ -99,12 +109,7 @@ void				wait_cmd(char ***env)
 	{
 		prev_cmd(&cmdline, DEFAULT);
 		cmdtab = line_to_tab(cmdline);
-		ft_strdel(&cmdline);
-		if (cmdtab[0] && !ft_strcmp(cmdtab[0], "exit"))
-		{
-			ft_strdel(&cmdtab[0]);
-			exit(0);
-		}
+		msh_switch(cmdtab);
 	}
 	ft_strdel(&cmdline);
 	wait_cmd(env);

@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 21:59:45 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/27 16:56:18 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/03 02:21:08 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,14 @@ char			**line_to_tab(char *line)
 	{
 		if (line[i] != ' ' && line[i] != '\t')
 		{
-			tab = add_one_str(tab);
+			tab = add_one_str(tab, j + 1);
 			tab[j] = NULL;
 			i += get_clean_str(&(line[i]), &(tab[j]));
-			j++;
+			if (tab[j])
+				j++;
 		}
 		i++;
 	}
+	tab[j] = NULL;
 	return (tab);
 }

@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/30 15:12:04 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/02 17:30:59 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/02 21:28:35 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,21 +38,24 @@ static int	count_line(char *cmd, int pos_y, int pos_x, int savenl)
 	return (savenl);
 }
 
-void		clean_line(char *cmd, int pos, int mode)
+void		clean_line(char *cmd, unsigned long pos, int mode)
 {
 	int				y;
 	int				x;
 	static int		savenl;
 
-	if (!mode)
+	x = CURSOR_X(pos);
+	y = CURSOR_Y(pos);
+	if (cmd && (!mode || mode == 2))
 	{
-		x = CURSOR_X(pos);
-		y = CURSOR_Y(pos);
 		savenl = count_line(cmd, y, x - savenl, savenl);
 		ft_printf("\033[%d;%dH", x - savenl, y);
-		ft_putstr("\033[J");
-		ft_putstr("\033[K");
+		if (!mode)
+		{
+			ft_putstr("\033[J");
+			ft_putstr("\033[K");
+		}
 	}
-	else
+	else if (mode == 1)
 		savenl = 0;
 }
