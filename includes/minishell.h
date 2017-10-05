@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 15:47:07 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/03 02:10:40 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/05 18:21:51 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,14 @@
 /*
 **	ERROR CODE
 */
+# define ENV_ERR 1
+# define CD_ERR 2
+# define EXI_ERR 3
+# define SENV_ERR 4
 # define NO_FILE 1
 # define TM_ARGS 2
+# define NO_CMD 3
+# define STX_ERR 4
 
 typedef struct		s_dlist
 {
@@ -46,12 +52,16 @@ typedef struct		s_dlist
 }					t_dlist;
 
 /*
+**	TOOLS
+*/
+int				count_var(char ***env);
+char			*search_var(char ***env, char *name);
+/*
 **	CORE FUNCTION
 */
-int				msh_error(int nbr, char *from);
-void			msh_switch(char **cmdtab);
+int				msh_switch(char **cmdtab, char ****env);
+void			msh_error(int nbr, char *from, int funcnum);
 char			***get_env(char **environ);
-char			*search_var(char ***env, char *name);
 /*
 **	INPUT FUNCTION
 */
@@ -75,5 +85,9 @@ unsigned long	get_cursor_pos(void);
 **	BUILTINS FUNCTION
 */
 void			msh_exit(char **arg);
+void			msh_env(char **arg, char ***env);
+void			msh_setenv(char **arg, char ****env);
+void			edit_env(char *arg, char ****env);
+//void			msh_cd(char ***env);
 
 #endif

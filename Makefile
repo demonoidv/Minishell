@@ -6,7 +6,7 @@
 #    By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/08/20 14:41:19 by vsporer           #+#    #+#              #
-#    Updated: 2017/10/03 00:51:18 by vsporer          ###   ########.fr        #
+#    Updated: 2017/10/05 17:39:50 by vsporer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,11 +19,13 @@ C_DEL =				\033[31m
 C_SRC =				\033[44m
 C_INPUT =			\033[36;44m
 C_BUILTINS =		\033[32;44m
+C_TOOLS =			\033[1;33;44m
 
 PATH_LIBFT =		libft/
 PATH_SRC =			src/
 PATH_INPUT =		$(PATH_SRC)input/
 PATH_BUILTINS =		$(PATH_SRC)builtins/
+PATH_TOOLS =		$(PATH_SRC)tools/
 PATH_OBJ =			objs/
 
 CC =				gcc -Wall -Werror -Wextra
@@ -31,7 +33,6 @@ INC =				-I includes/ -I libft/includes/
 
 SRC =				$(PATH_SRC)main.c\
 					$(PATH_SRC)get_env.c\
-					$(PATH_SRC)search_var.c\
 					$(PATH_SRC)msh_switch.c\
 					$(PATH_SRC)msh_error.c
 
@@ -45,10 +46,17 @@ INPUT =				$(PATH_INPUT)wait_cmd.c\
 					$(PATH_INPUT)set_term_param.c\
 					$(PATH_INPUT)tools.c
 
-BUILTINS =			$(PATH_BUILTINS)msh_exit.c
+BUILTINS =			$(PATH_BUILTINS)msh_exit.c\
+					$(PATH_BUILTINS)msh_env.c\
+					$(PATH_BUILTINS)msh_setenv.c
+#					$(PATH_BUILTINS)msh_cd.c
+
+TOOLS =				$(PATH_TOOLS)count_var.c\
+					$(PATH_TOOLS)search_var.c
 
 OBJ =				$(patsubst $(PATH_SRC)%.c, $(PATH_OBJ)%.o, $(SRC))\
 					$(patsubst $(PATH_INPUT)%.c, $(PATH_OBJ)%.o, $(INPUT))\
+					$(patsubst $(PATH_TOOLS)%.c, $(PATH_OBJ)%.o, $(TOOLS))\
 					$(patsubst $(PATH_BUILTINS)%.c, $(PATH_OBJ)%.o, $(BUILTINS))
 
 .PHONY: all clean fclean libft
@@ -77,6 +85,11 @@ $(PATH_OBJ)%.o: $(PATH_INPUT)%.c
 
 $(PATH_OBJ)%.o: $(PATH_BUILTINS)%.c
 	@echo "$(C_BUILTINS)Compiling $< to $@$(C_RESET)"
+	@mkdir -p $(@D)
+	@$(CC) $(INC) -c $< -o $@
+
+$(PATH_OBJ)%.o: $(PATH_TOOLS)%.c
+	@echo "$(C_TOOLS)Compiling $< to $@$(C_RESET)"
 	@mkdir -p $(@D)
 	@$(CC) $(INC) -c $< -o $@
 
