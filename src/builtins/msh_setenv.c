@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 11:45:12 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/05 18:18:58 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/07 20:25:22 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void		add_var(char **new, char ****env)
 
 	i = 0;
 	tmp = (char***)malloc(sizeof(char**) * (count_var(*env) + 2));
-	while ((*env)[i])
+	while (*env && (*env)[i])
 	{
 		tmp[i] = (*env)[i];
 		i++;

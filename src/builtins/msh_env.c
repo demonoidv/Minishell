@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 05:40:13 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/05 18:24:24 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/07 20:08:41 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static char		***env_cpy(char ***env)
 	char	***new;
 
 	i = 0;
-	if ((new = (char***)malloc(sizeof(char**) * (count_var(env) + 1))))
+	new = NULL;
+	if (env && (new = (char***)malloc(sizeof(char**) * (count_var(env) + 1))))
 	{
 		while (env[i])
 		{

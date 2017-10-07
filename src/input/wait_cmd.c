@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 16:02:30 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/05 18:21:57 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/07 22:43:39 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void				wait_cmd(char ***env)
 	if (cmdline && cmdline[0])
 	{
 		prev_cmd(&cmdline, DEFAULT);
-		cmdtab = line_to_tab(cmdline);
+		cmdtab = line_to_tab(cmdline, env);
 		msh_error(msh_switch(cmdtab, &env), cmdtab[0], DEFAULT);
 	}
 	ft_strdel(&cmdline);

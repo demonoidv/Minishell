@@ -1,36 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   msh_exit.c                                         :+:      :+:    :+:   */
+/*   msh_echo.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/03 00:52:11 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/07 19:33:50 by vsporer          ###   ########.fr       */
+/*   Created: 2017/10/07 21:16:40 by vsporer           #+#    #+#             */
+/*   Updated: 2017/10/07 21:30:13 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	msh_tablen(char **tab)
+void	msh_echo(char **arg)
 {
 	int		i;
 
 	i = 0;
-	while (tab && tab[i])
+	while (arg[i])
+	{
+		ft_putstr(arg[i]);
 		i++;
-	return (i);
-}
-
-void		msh_exit(char **arg)
-{
-	char	ret;
-
-	ret = 0;
-	if (msh_tablen(arg) > 1)
-		msh_error(TM_ARGS, "exit", EXI_ERR);
-	else if (arg[0])
-		exit((char)ft_atoi(arg[0]));
-	else
-		exit(0);
+		if (arg[i])
+			ft_putchar(' ');
+	}
+	ft_putchar('\n');
 }

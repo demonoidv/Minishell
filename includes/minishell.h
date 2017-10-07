@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 15:47:07 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/05 18:21:51 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/07 22:41:14 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void			add_current(t_dlist **dlist, char **cmd);
 void			del_dlist(t_dlist **todel);
 void			up_dlist(t_dlist **toup);
 char			**add_one_str(char **tab, int len);
-char			**line_to_tab(char *line);
+char			**line_to_tab(char *line, char ***env);
 char			*del_char(char *cmd, int pos, unsigned long curs);
 char			*del_frontchar(char *cmd, int pos, unsigned long curs);
 char			check_escape(char *line);
@@ -85,9 +85,11 @@ unsigned long	get_cursor_pos(void);
 **	BUILTINS FUNCTION
 */
 void			msh_exit(char **arg);
+void			msh_cd(char ***env);
+void			msh_echo(char **arg);
 void			msh_env(char **arg, char ***env);
 void			msh_setenv(char **arg, char ****env);
 void			edit_env(char *arg, char ****env);
-//void			msh_cd(char ***env);
+void			msh_unsetenv(char **arg, char ****env);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 03:59:19 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/05 05:19:46 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/07 21:16:16 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 
 void	msh_cd(char ***env)
 {
-	
+	if (env)
+		ft_putendl("Ceci est un cd");
 }
