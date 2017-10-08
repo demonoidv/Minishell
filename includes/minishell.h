@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 15:47:07 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/07 22:41:14 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/08 18:03:54 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct		s_dlist
 **	TOOLS
 */
 int				count_var(char ***env);
+int				next_cmdline(char ***cmdtab);
 char			*search_var(char ***env, char *name);
 /*
 **	CORE FUNCTION

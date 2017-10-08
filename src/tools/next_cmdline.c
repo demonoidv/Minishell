@@ -1,32 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   msh_switch.c                                       :+:      :+:    :+:   */
+/*   next_cmdline.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/02 23:17:18 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/08 18:20:30 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/08 23:28:01 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		msh_switch(char **cmdtab, char ****env)
+int		next_cmdline(char ***cmdtab)
 {
-	if (!ft_strcmp(cmdtab[0], "exit"))
-		msh_exit(&(cmdtab[1]));
-	else if (!ft_strcmp(cmdtab[0], "echo"))
-		msh_echo(&(cmdtab[1]));
-	else if (!ft_strcmp(cmdtab[0], "cd"))
-		msh_cd(*env);
-	else if (!ft_strcmp(cmdtab[0], "env"))
-		msh_env(&(cmdtab[1]), *env);
-	else if (!ft_strcmp(cmdtab[0], "setenv"))
-		msh_setenv(&(cmdtab[1]), env);
-	else if (!ft_strcmp(cmdtab[0], "unsetenv"))
-		msh_unsetenv(&(cmdtab[1]), env);
+	int				i;
+	static int		pos;
+	static char		**save;
+
+	i = 0;
+	if (pos > 0)
+	{
+		pos--;
+		*cmdtab = &((*cmdtab)[pos]);
+		if ((*cmdtab)[1])
+			**cmdtab = ft_strdup("\033;");
+		(*cmdtab)++;
+	}
 	else
-		return (NO_CMD);
-	return (0);
+		save = *cmdtab;
+	if (!(**cmdtab))
+	{
+		(*cmdtab)[pos] = ft_strdup("\033;");
+		pos = 0;
+		*cmdtab = save;
+		return (0);
+	}
+	while ((*cmdtab)[i + 1] && ft_strcmp((*cmdtab)[i], "\033;"))
+		i++;
+	if (!ft_strcmp((*cmdtab)[i], "\033;") && (*cmdtab)[pos])
+		ft_strdel((*cmdtab) + i);
+	pos = i + 1;
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 21:59:45 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/08 00:21:36 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/08 23:37:01 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ static int		get_clean_str(char *line, char **str, char ***env)
 
 	i = 0;
 	mode = 0;
-	while (line[i] && ((line[i] != ' ' && line[i] != '\t') || (mode & 6)))
+	while (line[i] && ((line[i] != ' ' && line[i] != '\t' && \
+	(line[i] != ';' || (mode & ESC_MOD))) || (mode & 6)))
 	{
 		if (line[i] == '\\' && !(mode & ESC_MOD))
 			mode = (mode | ESC_MOD);
@@ -86,6 +87,17 @@ static int		get_clean_str(char *line, char **str, char ***env)
 		i++;
 	}
 	return (i - 1);
+}
+static int		new_cmd(char c, char ***tab, int j)
+{
+	if (c)
+	{
+		*tab = add_one_str(*tab, j + 1);
+		(*tab)[j] = ft_strdup("\033;");
+		if ((*tab)[j])
+			j++;
+	}
+	return (j);
 }
 
 char			**line_to_tab(char *line, char ***env)
@@ -102,15 +114,15 @@ char			**line_to_tab(char *line, char ***env)
 		if (line[i] != ' ' && line[i] != '\t' && line[i] != ';')
 		{
 			tab = add_one_str(tab, j + 1);
-			tab[j] = NULL;
 			i += get_clean_str(&(line[i]), &(tab[j]), env);
 			if (tab[j])
 				j++;
-			if (tab[j] && ft_strcmp(tab[j], ";"))
-				j++;
 		}
+		else if (tab && line[i] && line[i] == ';' && line[i + 1] != ';')
+			j = new_cmd(line[i + 1], &tab, j);
 		i++;
 	}
-	tab[j] = NULL;
+	if (tab)
+		tab[j] = NULL;
 	return (tab);
 }

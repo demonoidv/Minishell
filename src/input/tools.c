@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/23 17:19:16 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/03 02:22:15 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/08 15:33:14 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ char			**add_one_str(char **tab, int len)
 			new[i] = tab[i];
 			i++;
 		}
+		if (!tab)
+			new[1] = NULL;
 		new[i] = NULL;
 		ft_memdel((void**)&(tab));
 		tab = new;
