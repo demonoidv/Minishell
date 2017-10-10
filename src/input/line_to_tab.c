@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 21:59:45 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/08 23:37:01 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/09 21:20:40 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,8 @@ char			**line_to_tab(char *line, char ***env)
 			if (tab[j])
 				j++;
 		}
-		else if (tab && line[i] && line[i] == ';' && line[i + 1] != ';')
+		else if (tab && line[i] && line[i] == ';' && line[i + 1] != ';' && \
+		ft_strcmp(tab[j - 1], "\033;"))
 			j = new_cmd(line[i + 1], &tab, j);
 		i++;
 	}

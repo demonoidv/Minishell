@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 17:04:23 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/05 17:55:05 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/10 01:21:01 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,18 @@ void			msh_error(int nbr, char *from, int funcnum)
 	if (from && nbr)
 	{
 		if (nbr == NO_FILE)
-			ft_printf("%s: %s: No such file or directory\n", err, from);
+			ft_printf("%s: no such file or directory: %s\n", err, from);
 		else if (nbr == TM_ARGS)
 			ft_printf("%s: too many arguments\n", from);
 		else if (nbr == NO_CMD)
-			ft_printf("%s: %s: command not found\n", err, from);
+			ft_printf("%s: command not found: %s\n", err, from);
 		else if (nbr == STX_ERR)
 			ft_printf("%s: %s: syntax error\n", err, from);
+		else if (nbr == VAR_NSET)
+			ft_printf("%s: %s not set\n", err, from);
+		else if (nbr == PERM_DEN)
+			ft_printf("%s: %s: permission denied\n", err, from);
+		else if (nbr == NO_DIR)
+			ft_printf("%s: not a directory: %s\n", err, from);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 15:47:07 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/08 18:03:54 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/09 22:47:59 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@
 # define TM_ARGS 2
 # define NO_CMD 3
 # define STX_ERR 4
+# define VAR_NSET 5
+# define PERM_DEN 6
+# define NO_DIR 7
 
 typedef struct		s_dlist
 {
@@ -56,6 +59,7 @@ typedef struct		s_dlist
 */
 int				count_var(char ***env);
 int				next_cmdline(char ***cmdtab);
+int				msh_tablen(char **tab);
 char			*search_var(char ***env, char *name);
 /*
 **	CORE FUNCTION
@@ -86,7 +90,7 @@ unsigned long	get_cursor_pos(void);
 **	BUILTINS FUNCTION
 */
 void			msh_exit(char **arg);
-void			msh_cd(char ***env);
+void			msh_cd(char **arg, char ****env);
 void			msh_echo(char **arg);
 void			msh_env(char **arg, char ***env);
 void			msh_setenv(char **arg, char ****env);

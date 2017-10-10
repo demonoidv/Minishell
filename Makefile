@@ -6,7 +6,7 @@
 #    By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/08/20 14:41:19 by vsporer           #+#    #+#              #
-#    Updated: 2017/10/08 18:04:21 by vsporer          ###   ########.fr        #
+#    Updated: 2017/10/09 21:15:16 by vsporer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,7 @@ BUILTINS =			$(PATH_BUILTINS)msh_exit.c\
 
 TOOLS =				$(PATH_TOOLS)count_var.c\
 					$(PATH_TOOLS)search_var.c\
+					$(PATH_TOOLS)msh_tablen.c\
 					$(PATH_TOOLS)next_cmdline.c
 
 OBJ =				$(patsubst $(PATH_SRC)%.c, $(PATH_OBJ)%.o, $(SRC))\

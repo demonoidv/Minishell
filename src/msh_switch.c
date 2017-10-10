@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/02 23:17:18 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/08 18:20:30 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/09 23:42:07 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		msh_switch(char **cmdtab, char ****env)
 	else if (!ft_strcmp(cmdtab[0], "echo"))
 		msh_echo(&(cmdtab[1]));
 	else if (!ft_strcmp(cmdtab[0], "cd"))
-		msh_cd(*env);
+		msh_cd(&(cmdtab[1]), env);
 	else if (!ft_strcmp(cmdtab[0], "env"))
 		msh_env(&(cmdtab[1]), *env);
 	else if (!ft_strcmp(cmdtab[0], "setenv"))
