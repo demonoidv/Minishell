@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   exit_value.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/16 15:46:28 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/11 19:48:48 by vsporer          ###   ########.fr       */
+/*   Created: 2017/10/11 15:00:14 by vsporer           #+#    #+#             */
+/*   Updated: 2017/10/11 15:19:12 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		main(int ac, char **av, char **envp)
+int		exit_value(int value, int mod)
 {
-	char	***env;
+	static int	ret;
 
-	av = NULL;
-	if (ac != 1)
-		return (1);
-	exit_value(-1, SET);
-	env = get_env(envp);
-	wait_cmd(env);
-	return (exit_value(0, CHECK));
+	if (mod == SET)
+		ret = value;
+	return (ret);
 }

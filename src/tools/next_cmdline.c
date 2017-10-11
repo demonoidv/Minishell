@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/02 23:17:18 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/08 23:28:01 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/11 20:21:44 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,8 @@ int		next_cmdline(char ***cmdtab)
 	}
 	else
 		save = *cmdtab;
-	if (!(**cmdtab))
+	if (!(**cmdtab) || exit_value(0, CHECK) >= 0)
 	{
-		(*cmdtab)[pos] = ft_strdup("\033;");
 		pos = 0;
 		*cmdtab = save;
 		return (0);

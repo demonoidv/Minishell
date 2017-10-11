@@ -1,26 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   msh_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/16 15:46:28 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/11 19:48:48 by vsporer          ###   ########.fr       */
+/*   Created: 2017/10/11 20:24:40 by vsporer           #+#    #+#             */
+/*   Updated: 2017/10/11 20:27:25 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		main(int ac, char **av, char **envp)
+void	msh_exec(char **arg, char ***env)
 {
-	char	***env;
-
-	av = NULL;
-	if (ac != 1)
-		return (1);
-	exit_value(-1, SET);
-	env = get_env(envp);
-	wait_cmd(env);
-	return (exit_value(0, CHECK));
+	
 }

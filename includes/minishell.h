@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 15:47:07 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/09 22:47:59 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/11 20:40:52 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,9 @@ typedef struct		s_dlist
 int				count_var(char ***env);
 int				next_cmdline(char ***cmdtab);
 int				msh_tablen(char **tab);
+int				exit_value(int value, int mod);
+void			del_cmdtab(char ***cmdtab);
+void			del_env(char ****env);
 char			*search_var(char ***env, char *name);
 /*
 **	CORE FUNCTION
@@ -72,13 +75,13 @@ char			***get_env(char **environ);
 */
 int				event_manager(char **cmd, int pos, char *c, unsigned long curs);
 void			clean_line(char *cmd, unsigned long pos, int mode);
-void			wait_cmd(char ***env);
 void			prev_cmd(char **cmd, int mode);
 void			set_term_param(int mode);
 void			add_dlist(t_dlist **adlist, t_dlist *new);
 void			add_current(t_dlist **dlist, char **cmd);
 void			del_dlist(t_dlist **todel);
 void			up_dlist(t_dlist **toup);
+void			wait_cmd(char ***env);
 char			**add_one_str(char **tab, int len);
 char			**line_to_tab(char *line, char ***env);
 char			*del_char(char *cmd, int pos, unsigned long curs);
@@ -90,11 +93,12 @@ unsigned long	get_cursor_pos(void);
 **	BUILTINS FUNCTION
 */
 void			msh_exit(char **arg);
+//void			msh_exec(char **arg, char ***env);
 void			msh_cd(char **arg, char ****env);
 void			msh_echo(char **arg);
 void			msh_env(char **arg, char ***env);
 void			msh_setenv(char **arg, char ****env);
-void			edit_env(char *arg, char ****env);
 void			msh_unsetenv(char **arg, char ****env);
+void			edit_env(char *arg, char ****env);
 
 #endif
