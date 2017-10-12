@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 17:04:23 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/10 01:21:01 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/13 00:52:03 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,14 @@ static char		*check_funcnum(int funcnum)
 		return ("minishell");
 }
 
+static void		exit_signal(void)
+{
+	int		ret;
+
+	ret = exit_value(-1, (CHECK | SIGEXIT));
+	ft_dprintf(2, "Signal interruption code: %d\n", ret);
+}
+
 void			msh_error(int nbr, char *from, int funcnum)
 {
 	char	*err;
@@ -34,18 +42,26 @@ void			msh_error(int nbr, char *from, int funcnum)
 	if (from && nbr)
 	{
 		if (nbr == NO_FILE)
-			ft_printf("%s: no such file or directory: %s\n", err, from);
+			ft_dprintf(2, "%s: no such file or directory: %s\n", err, from);
 		else if (nbr == TM_ARGS)
-			ft_printf("%s: too many arguments\n", from);
+			ft_dprintf(2, "%s: too many arguments\n", from);
 		else if (nbr == NO_CMD)
-			ft_printf("%s: command not found: %s\n", err, from);
+			ft_dprintf(2, "%s: command not found: %s\n", err, from);
 		else if (nbr == STX_ERR)
-			ft_printf("%s: %s: syntax error\n", err, from);
+			ft_dprintf(2, "%s: %s: syntax error\n", err, from);
 		else if (nbr == VAR_NSET)
-			ft_printf("%s: %s not set\n", err, from);
+			ft_dprintf(2, "%s: %s not set\n", err, from);
 		else if (nbr == PERM_DEN)
-			ft_printf("%s: %s: permission denied\n", err, from);
+			ft_dprintf(2, "%s: %s: permission denied\n", err, from);
 		else if (nbr == NO_DIR)
-			ft_printf("%s: not a directory: %s\n", err, from);
+			ft_dprintf(2, "%s: not a directory: %s\n", err, from);
+		else if (nbr == IS_DIR)
+			ft_dprintf(2, "%s: is a directory: %s\n", err, from);
+		else if (nbr == EXC_FORM)
+			ft_dprintf(2, "%s: exec format error: %s\n", err, from);
+		else if (nbr == FORK_ERR)
+			ft_dprintf(2, "%s: can not creat new process: %s\n", err, from);
+		else if (nbr == SIG_TERM)
+			exit_signal();
 	}
 }

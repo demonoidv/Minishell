@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/02 23:17:18 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/11 19:24:29 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/13 00:40:56 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@ int		msh_switch(char **cmdtab, char ****env)
 	else if (!ft_strcmp(cmdtab[0], "unsetenv"))
 		msh_unsetenv(&(cmdtab[1]), env);
 	else
-		return (NO_CMD);
+		return (msh_exec(cmdtab, *env));
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: vsporer <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/15 15:51:49 by vsporer           #+#    #+#              #
-#    Updated: 2017/09/22 18:06:28 by vsporer          ###   ########.fr        #
+#    Updated: 2017/10/12 21:34:40 by vsporer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -125,6 +125,7 @@ SRCS =			$(PATH_BASE)ft_atoi.c\
 				$(PATH_BASE)ft_wcsrlen.c\
 				$(PATH_BASE)ft_wcsrtombs.c\
 				$(PATH_BASE)ft_putstr_minlen.c\
+				$(PATH_BASE)ft_putstr_minlen_fd.c\
 				$(PATH_BASE)ft_strstr_minlen.c\
 				$(PATH_BASE)ft_lstaddback.c\
 				$(PATH_BASE)ft_nbrlen.c\

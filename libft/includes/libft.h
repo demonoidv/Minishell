@@ -6,7 +6,7 @@
 /*   By: vsporer <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/07 13:35:39 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/17 20:49:19 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/12 21:35:09 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,14 @@ int					ft_wcrtomb(char *str, wchar_t wc);
 size_t				ft_wcsrlen(wchar_t *wcs, size_t lenmax);
 size_t				ft_wcsrtombs(char *str, wchar_t *wcs, size_t lenmax);
 void				ft_putstr_minlen(char *str, size_t len);
+void				ft_putstr_minlen_fd(char *str, size_t len, int fd);
 char				*ft_strstr_minlen(const char *haystack, \
 					const char *needle, size_t len);
 char				*ft_strsubstitute_minlen(char *s1, char *chr, char *s2, \
 					size_t len);
 int					get_next_line(const int fd, char **line);
 int					ft_printf(const char *format, ...);
+int					ft_dprintf(int fd, const char *format, ...);
 void				ft_swap_ptr(void **p1, void **p2);
 size_t				ft_nbrlen(int n);
 char				**ft_split_whitespaces(char *str);

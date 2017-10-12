@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 15:47:07 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/11 20:40:52 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/13 01:00:32 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # define DEFAULT 0
 # define CHECK 1
 # define SET 2
+# define SIGEXIT 4
+# define STATEXIT 8
 # define QUOTE '\''
 # define DQUOTE '"'
 # define DQUOTE_MOD 4
@@ -45,6 +47,10 @@
 # define VAR_NSET 5
 # define PERM_DEN 6
 # define NO_DIR 7
+# define IS_DIR 8
+# define EXC_FORM 9
+# define FORK_ERR 10
+# define SIG_TERM 11
 
 typedef struct		s_dlist
 {
@@ -92,8 +98,8 @@ unsigned long	get_cursor_pos(void);
 /*
 **	BUILTINS FUNCTION
 */
+int				msh_exec(char **arg, char ***env);
 void			msh_exit(char **arg);
-//void			msh_exec(char **arg, char ***env);
 void			msh_cd(char **arg, char ****env);
 void			msh_echo(char **arg);
 void			msh_env(char **arg, char ***env);
