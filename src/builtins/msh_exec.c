@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:24:40 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/13 01:05:51 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/13 15:52:29 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,18 +116,11 @@ int				msh_exec(char **arg, char ***env)
 			return (PERM_DEN);
 		else if (!(tmp[1]))
 			return (check_directory(arg[0]));
-		else if (!exec_prog(ft_strdup(arg[0]), &(arg[1]), env))
-			return (0);
 		else
-			return (EXC_FORM);
+			return (exec_prog(ft_strdup(arg[0]), arg, env));
 	}
 	else if (!(ret = search_path(&tmp, arg[0], search_var(env, "PATH"))))
-	{
-		if (!exec_prog(tmp, &(arg[1]), env))
-			return (0);
-		else
-			return (EXC_FORM);
-	}
+		return (exec_prog(tmp, arg, env));
 	else
 		return (ret);
 }

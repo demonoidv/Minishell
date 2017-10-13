@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 21:59:45 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/11 19:23:55 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/13 15:52:07 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static char		*add_char(char *str, char *c, int *mode)
 	}
 	return (str);
 }
-
+/*
 static int		var_to_value(char **str, char *line, int *mode, char ***env)
 {
 	int		i;
@@ -62,9 +62,9 @@ static int		var_to_value(char **str, char *line, int *mode, char ***env)
 	else
 		*str = ft_strjoin_free(*str, "$", 1);
 	return (i);
-}
+}*/
 
-static int		get_clean_str(char *line, char **str, char ***env)
+static int		get_clean_str(char *line, char **str/*, char ***env*/)
 {
 	int		i;
 	int		mode;
@@ -80,8 +80,8 @@ static int		get_clean_str(char *line, char **str, char ***env)
 			mode = mode ^ DQUOTE_MOD;
 		else if (line[i] == '\'' && !(mode & ESC_MOD) && !(mode & DQUOTE_MOD))
 			mode = mode ^ QUOTE_MOD;
-		else if ((line[i] == '~' || line[i] == '$') && !(mode & ESC_MOD))
-			i += var_to_value(str, &(line[i]), &mode, env);
+/*		else if ((line[i] == '~' || line[i] == '$') && !(mode & ESC_MOD))
+			i += var_to_value(str, &(line[i]), &mode, env);*/
 		else
 			*str = add_char(*str, &(line[i]), &mode);
 		i++;
@@ -109,12 +109,13 @@ char			**line_to_tab(char *line, char ***env)
 	i = 0;
 	j = 0;
 	tab = NULL;
+	env = NULL;
 	while (line && line[i])
 	{
 		if (line[i] != ' ' && line[i] != '\t' && line[i] != ';')
 		{
 			tab = add_one_str(tab, j + 1);
-			i += get_clean_str(&(line[i]), &(tab[j]), env);
+			i += get_clean_str(&(line[i]), &(tab[j])/*, env*/);
 			if (tab[j])
 				j++;
 		}

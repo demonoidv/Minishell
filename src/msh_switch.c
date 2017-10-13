@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/02 23:17:18 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/13 00:40:56 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/13 14:12:35 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int		msh_switch(char **cmdtab, char ****env)
 {
+	msh_signal();
 	if (!ft_strcmp(cmdtab[0], "exit"))
 		msh_exit(&(cmdtab[1]));
 	else if (!ft_strcmp(cmdtab[0], "echo"))

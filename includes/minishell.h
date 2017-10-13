@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 15:47:07 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/13 01:00:32 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/13 17:46:20 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,15 @@ int				exit_value(int value, int mod);
 void			del_cmdtab(char ***cmdtab);
 void			del_env(char ****env);
 char			*search_var(char ***env, char *name);
+pid_t			last_pid(pid_t pid);
 /*
 **	CORE FUNCTION
 */
 int				msh_switch(char **cmdtab, char ****env);
 void			msh_error(int nbr, char *from, int funcnum);
+void			msh_signal(void);
 char			***get_env(char **environ);
+void			signal_handler(int sig);
 /*
 **	INPUT FUNCTION
 */

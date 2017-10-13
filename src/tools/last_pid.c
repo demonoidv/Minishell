@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   last_pid.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/16 15:46:28 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/13 15:26:48 by vsporer          ###   ########.fr       */
+/*   Created: 2017/10/13 14:13:45 by vsporer           #+#    #+#             */
+/*   Updated: 2017/10/13 14:19:05 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		main(int ac, char **av, char **envp)
+pid_t	last_pid(pid_t pid)
 {
-	char	***env;
+	pid_t			tmp;
+	static pid_t	last = 0;
 
-	av = NULL;
-	if (ac != 1)
-		return (1);
-	exit_value(-1, SET);
-	env = get_env(envp);
-	wait_cmd(env);
-	return (exit_value(0, CHECK));
+	tmp = last;
+	last = pid;
+	return (tmp);
 }

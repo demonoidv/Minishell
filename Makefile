@@ -6,7 +6,7 @@
 #    By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/08/20 14:41:19 by vsporer           #+#    #+#              #
-#    Updated: 2017/10/13 01:00:25 by vsporer          ###   ########.fr        #
+#    Updated: 2017/10/13 14:25:14 by vsporer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,8 @@ INC =				-I includes/ -I libft/includes/
 SRC =				$(PATH_SRC)main.c\
 					$(PATH_SRC)get_env.c\
 					$(PATH_SRC)msh_switch.c\
+					$(PATH_SRC)msh_signal.c\
+					$(PATH_SRC)signal_handler.c\
 					$(PATH_SRC)msh_error.c
 
 INPUT =				$(PATH_INPUT)wait_cmd.c\
@@ -60,6 +62,7 @@ TOOLS =				$(PATH_TOOLS)count_var.c\
 					$(PATH_TOOLS)exit_value.c\
 					$(PATH_TOOLS)del_cmdtab.c\
 					$(PATH_TOOLS)del_env.c\
+					$(PATH_TOOLS)last_pid.c\
 					$(PATH_TOOLS)next_cmdline.c
 
 OBJ =				$(patsubst $(PATH_SRC)%.c, $(PATH_OBJ)%.o, $(SRC))\

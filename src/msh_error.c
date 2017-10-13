@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 17:04:23 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/13 00:52:03 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/13 12:42:45 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void			msh_error(int nbr, char *from, int funcnum)
 		else if (nbr == VAR_NSET)
 			ft_dprintf(2, "%s: %s not set\n", err, from);
 		else if (nbr == PERM_DEN)
-			ft_dprintf(2, "%s: %s: permission denied\n", err, from);
+			ft_dprintf(2, "%s: permission denied: %s\n", err, from);
 		else if (nbr == NO_DIR)
 			ft_dprintf(2, "%s: not a directory: %s\n", err, from);
 		else if (nbr == IS_DIR)
