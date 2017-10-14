@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 15:47:07 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/13 17:46:20 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/14 22:18:51 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void			add_dlist(t_dlist **adlist, t_dlist *new);
 void			add_current(t_dlist **dlist, char **cmd);
 void			del_dlist(t_dlist **todel);
 void			up_dlist(t_dlist **toup);
-void			wait_cmd(char ***env);
+char			***wait_cmd(char ***env);
 char			**add_one_str(char **tab, int len);
 char			**line_to_tab(char *line, char ***env);
 char			*del_char(char *cmd, int pos, unsigned long curs);

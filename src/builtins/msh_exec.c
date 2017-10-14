@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:24:40 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/13 15:52:29 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/14 19:19:39 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,20 @@
 
 static int		check_directory(char *arg)
 {
+	int				ret;
 	struct stat		st;
 
+	ret = NO_FILE;
+	arg[ft_strlen(arg) - 1] = '\0';
 	if (!stat(arg, &st))
 	{
 		if (S_ISDIR(st.st_mode))
-			return (IS_DIR);
+			ret = IS_DIR;
 		else
-			return (NO_DIR);
+			ret = NO_DIR;
 	}
-	return (NO_FILE);
+	arg[ft_strlen(arg)] = '/';
+	return (ret);
 }
 
 static char		**join_env_var(char ***env)
@@ -108,16 +112,20 @@ int				msh_exec(char **arg, char ***env)
 	int		ret;
 	char	*tmp;
 
+	ret = 0;
 	if ((tmp = ft_strchr(arg[0], '/')))
 	{
-		if (access(arg[0], F_OK) == -1)
-			return (NO_FILE);
+		if ((tmp[ft_strlen(tmp) - 1]) == '/')
+			ret = check_directory(arg[0]);
+		else if (access(arg[0], F_OK) == -1)
+			ret = NO_FILE;
 		else if (access(arg[0], X_OK) == -1)
-			return (PERM_DEN);
-		else if (!(tmp[1]))
-			return (check_directory(arg[0]));
+			ret = PERM_DEN;
 		else
-			return (exec_prog(ft_strdup(arg[0]), arg, env));
+			ret = exec_prog(ft_strdup(arg[0]), arg, env);
+		if (!(*tmp))
+			*tmp = '/';
+		return (ret);
 	}
 	else if (!(ret = search_path(&tmp, arg[0], search_var(env, "PATH"))))
 		return (exec_prog(tmp, arg, env));

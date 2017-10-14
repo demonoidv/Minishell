@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 05:40:13 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/11 18:46:16 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/14 18:18:12 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,11 @@ void			msh_env(char **arg, char ***env)
 		edit_env(arg[i], &env);
 		i++;
 	}
-	if (arg[i])
-		msh_error(msh_switch(&(arg[i]), &env), arg[i], ENV_ERR);
+	if (arg[i] && !ft_strcmp(arg[i], "env"))
+		msh_env(&(arg[i + 1]), env);
+	else if (arg[i])
+		msh_error(msh_exec(&(arg[i]), env), arg[i], ENV_ERR);
 	else
 		display_env(env);
+	del_env(&env);
 }

@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 16:02:30 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/11 20:29:10 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/14 22:20:33 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static char			*get_cmd_quote(char *cmd, char quote)
 	return (cmd);
 }
 
-void				wait_cmd(char ***env)
+char				***wait_cmd(char ***env)
 {
 	char			quote;
 	char			*cmdline;
@@ -116,4 +116,5 @@ void				wait_cmd(char ***env)
 	ft_strdel(&cmdline);
 	if (exit_value(0, CHECK) < 0)
 		wait_cmd(env);
+	return (env);
 }

@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 12:22:02 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/29 14:29:57 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/14 16:33:40 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,17 @@ t_dlist		*new_dlist(const char *cmd)
 
 void		add_dlist(t_dlist **adlist, t_dlist *new)
 {
-	if (!(*adlist))
+	static int	first = 0;
+
+	if (!(*adlist) && !first)
 	{
+		first = 1;
 		*adlist = new;
 		add_dlist(adlist, new_dlist(NULL));
-		(*adlist)->curr = 1;
+		if (*adlist)
+			(*adlist)->curr = 1;
 	}
-	else if (new)
+	else if (first && new)
 	{
 		if ((*adlist)->prev && ((*adlist)->curr))
 			*adlist = (*adlist)->prev;
