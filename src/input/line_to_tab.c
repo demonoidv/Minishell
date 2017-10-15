@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 21:59:45 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/14 23:42:51 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/15 02:50:20 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ static char		*add_char(char *str, char *c, int *mode)
 		{
 			tmp = c[1];
 			c[1] = '\0';
-			if ((*c == '$' || *c == '~') && ((*mode) & ESC_MOD))
-				str = ft_strjoin_free(str, "\\", 1);
 			str = ft_strjoin_free(str, c, 1);
 			c[1] = tmp;
 			if (str && ((*mode) & ESC_MOD) && ((*mode) & 6) && \
@@ -44,15 +42,13 @@ static int		var_to_value(char **str, char *line, int *mode, char ***env)
 	char	*tmp;
 
 	i = 0;
-	if (line[i] == '~' && !((*mode) & 6))
+	if (line[i] == '~' && !((*mode) & 7))
 		*str = ft_strjoin_free(*str, search_var(env, "HOME"), 1);
 	else if (line[i] == '~')
 		*str = ft_strjoin_free(*str, "~", 1);
-	else if (line[i] == '$' && !((*mode) & QUOTE_MOD) && line[i + 1])
+	else if (line[i] == '$' && !((*mode) & 3) && line[i + 1])
 	{
-		while (line[i + 1] && line[i + 1] != '"' && line[i + 1] != '\'' && \
-		line[i + 1] != ' ' && line[i + 1] != '\t' && line[i + 1] != '\n' && \
-		line[i + 1] != '\\' && line[i + 1] != '$')
+		while (line[i + 1] && ft_isalpha(line[i + 1]))
 			i++;
 		if (i > 0)
 		{
@@ -60,6 +56,8 @@ static int		var_to_value(char **str, char *line, int *mode, char ***env)
 			*str = ft_strjoin_free(*str, search_var(env, tmp), 1);
 			ft_strdel(&tmp);
 		}
+		else if (line[++i] == '?')
+			*str = ft_strjoin_free(*str, ft_itoa(exit_value(0, 9)), 3);
 	}
 	else
 		*str = ft_strjoin_free(*str, "$", 1);
@@ -73,8 +71,7 @@ static int		get_clean_str(char *line, char **str, char ***env)
 
 	i = 0;
 	mode = 0;
-	while (line[i] && ((line[i] != ' ' && line[i] != '\t' && \
-	(line[i] != ';' || (mode & ESC_MOD))) || (mode & 6)))
+	while (line[i] && ((line[i] != ' ' && line[i] != '\t') || (mode & 6)))
 	{
 		if (line[i] == '\\' && !(mode & ESC_MOD))
 			mode = (mode | ESC_MOD);
@@ -90,17 +87,6 @@ static int		get_clean_str(char *line, char **str, char ***env)
 	}
 	return (i - 1);
 }
-static int		new_cmd(char c, char ***tab, int j)
-{
-	if (c)
-	{
-		*tab = add_one_str(*tab, j + 1);
-		(*tab)[j] = ft_strdup("\033;");
-		if ((*tab)[j])
-			j++;
-	}
-	return (j);
-}
 
 char			**line_to_tab(char *line, char ***env)
 {
@@ -111,19 +97,15 @@ char			**line_to_tab(char *line, char ***env)
 	i = 0;
 	j = 0;
 	tab = NULL;
-	env = NULL;
 	while (line && line[i])
 	{
-		if (line[i] != ' ' && line[i] != '\t' && line[i] != ';')
+		if (line[i] != ' ' && line[i] != '\t')
 		{
 			tab = add_one_str(tab, j + 1);
 			i += get_clean_str(&(line[i]), &(tab[j]), env);
 			if (tab && tab[j])
 				j++;
 		}
-		else if (tab && line[i] && line[i] == ';' && line[i + 1] != ';' && \
-		ft_strcmp(tab[j - 1], "\033;"))
-			j = new_cmd(line[i + 1], &tab, j);
 		i++;
 	}
 	if (tab)

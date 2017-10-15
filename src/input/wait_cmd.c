@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 16:02:30 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/14 22:20:33 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/15 03:02:18 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,35 @@ static char			*get_cmd_quote(char *cmd, char quote)
 	return (cmd);
 }
 
-char				***wait_cmd(char ***env)
+static void			exec_switch(char **cmdline, char ****env)
+{
+	int		i;
+	char	**cmdtab;
+	char	**multicmd;
+
+	i = 0;
+	prev_cmd(cmdline, DEFAULT);
+	multicmd = next_cmdline(*cmdline);
+	while (multicmd && multicmd[i] && exit_value(0, CHECK) < 0)
+	{
+		cmdtab = line_to_tab(multicmd[i], *env);
+		msh_error(msh_switch(cmdtab, env), cmdtab[0], DEFAULT);
+		del_cmdtab(&cmdtab);
+		ft_strdel(&(multicmd[i]));
+		i++;
+	}
+	while (multicmd && multicmd[i])
+	{
+		ft_strdel(&(multicmd[i]));
+		i++;
+	}
+	ft_memdel((void**)&multicmd);
+}
+
+void				wait_cmd(char ****env)
 {
 	char			quote;
 	char			*cmdline;
-	char			**cmdtab;
 	unsigned long	curs;
 
 	quote = DEFAULT;
@@ -106,15 +130,8 @@ char				***wait_cmd(char ***env)
 	set_term_param(DEFAULT);
 	clean_line(NULL, 0, 1);
 	if (cmdline && cmdline[0])
-	{
-		prev_cmd(&cmdline, DEFAULT);
-		cmdtab = line_to_tab(cmdline, env);
-		while (cmdtab && next_cmdline(&cmdtab))
-			msh_error(msh_switch(cmdtab, &env), cmdtab[0], DEFAULT);
-		del_cmdtab(&cmdtab);
-	}
+		exec_switch(&cmdline, env);
 	ft_strdel(&cmdline);
 	if (exit_value(0, CHECK) < 0)
 		wait_cmd(env);
-	return (env);
 }

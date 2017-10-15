@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 15:47:07 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/14 22:18:51 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/15 03:02:39 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,12 @@ typedef struct		s_dlist
 **	TOOLS
 */
 int				count_var(char ***env);
-int				next_cmdline(char ***cmdtab);
 int				msh_tablen(char **tab);
 int				exit_value(int value, int mod);
 void			del_cmdtab(char ***cmdtab);
 void			del_env(char ****env);
 char			*search_var(char ***env, char *name);
+char			**next_cmdline(char *cmdline);
 pid_t			last_pid(pid_t pid);
 /*
 **	CORE FUNCTION
@@ -78,6 +78,7 @@ int				msh_switch(char **cmdtab, char ****env);
 void			msh_error(int nbr, char *from, int funcnum);
 void			msh_signal(void);
 char			***get_env(char **environ);
+char			**add_one_str(char **tab, int len);
 void			signal_handler(int sig);
 /*
 **	INPUT FUNCTION
@@ -90,8 +91,7 @@ void			add_dlist(t_dlist **adlist, t_dlist *new);
 void			add_current(t_dlist **dlist, char **cmd);
 void			del_dlist(t_dlist **todel);
 void			up_dlist(t_dlist **toup);
-char			***wait_cmd(char ***env);
-char			**add_one_str(char **tab, int len);
+void			wait_cmd(char ****env);
 char			**line_to_tab(char *line, char ***env);
 char			*del_char(char *cmd, int pos, unsigned long curs);
 char			*del_frontchar(char *cmd, int pos, unsigned long curs);
