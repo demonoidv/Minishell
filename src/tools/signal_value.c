@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signal_value.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/16 15:46:28 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/15 15:31:24 by vsporer          ###   ########.fr       */
+/*   Created: 2017/10/15 15:12:07 by vsporer           #+#    #+#             */
+/*   Updated: 2017/10/15 15:15:13 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <signal.h>
 
-int		main(int ac, char **av, char **envp)
+int		signal_value(int sig)
 {
-	char	***env;
+	int			tmp;
+	static int	signo = 0;
 
-	av = NULL;
-	if (ac != 1)
-	{
-		msh_error(TM_ARGS, "minishell", DEFAULT);
-		return (1);
-	}
-	msh_signal();
-	exit_value(-1, SET);
-	env = get_env(envp);
-	wait_cmd(&env);
-	del_env(&env);
-	return (exit_value(0, CHECK));
+	tmp = signo;
+	signo = sig;
+	return (tmp);
 }

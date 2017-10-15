@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 15:47:07 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/15 03:02:39 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/15 15:15:46 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,11 @@ typedef struct		s_dlist
 int				count_var(char ***env);
 int				msh_tablen(char **tab);
 int				exit_value(int value, int mod);
+int				signal_value(int sig);
 void			del_cmdtab(char ***cmdtab);
 void			del_env(char ****env);
 char			*search_var(char ***env, char *name);
+char			*save_cmdline(char **cmdline, int mode);
 char			**next_cmdline(char *cmdline);
 pid_t			last_pid(pid_t pid);
 /*

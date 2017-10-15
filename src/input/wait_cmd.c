@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 16:02:30 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/15 03:02:18 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/15 15:42:38 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,11 @@ static char			*get_cmd_line(unsigned long curs)
 	ft_bzero(buff, 2);
 	while (buff[0] != '\n' && read(0, buff, 1))
 	{
+		if (signal_value(-1) == SIGINT)
+		{
+			ft_strdel(&cmd);
+			return (NULL);
+		}
 		if ((buff[0] >= 1 && buff[0] <= 6) || (buff[0] >= 14 && buff[0] <= 31)\
 		|| buff[0] == 127)
 			i = event_manager(&cmd, i, (char*)buff, curs);
@@ -98,6 +103,7 @@ static void			exec_switch(char **cmdline, char ****env)
 
 	i = 0;
 	prev_cmd(cmdline, DEFAULT);
+	save_cmdline(cmdline, SET);
 	multicmd = next_cmdline(*cmdline);
 	while (multicmd && multicmd[i] && exit_value(0, CHECK) < 0)
 	{
@@ -129,8 +135,10 @@ void				wait_cmd(char ****env)
 		cmdline = get_cmd_quote(cmdline, quote);
 	set_term_param(DEFAULT);
 	clean_line(NULL, 0, 1);
-	if (cmdline && cmdline[0])
+	if (cmdline && cmdline[0] && cmdline[0] != EOF)
 		exec_switch(&cmdline, env);
+	if (*cmdline == EOF)
+		msh_exit(NULL);
 	ft_strdel(&cmdline);
 	if (exit_value(0, CHECK) < 0)
 		wait_cmd(env);

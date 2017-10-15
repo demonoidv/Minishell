@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:24:40 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/14 19:19:39 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/15 14:04:13 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static int		exec_prog(char *path, char **args, char ***env)
 	envp = join_env_var(env);
 	if ((pid = fork()) > 0 && waitpid(pid, &status, 0) == pid)
 	{
+		last_pid(pid);
 		if (WIFEXITED(status))
 			exit_value(WEXITSTATUS(status), (SET | STATEXIT));
 		else if (WIFSIGNALED(status))

@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   save_cmdline.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/16 15:46:28 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/15 15:31:24 by vsporer          ###   ########.fr       */
+/*   Created: 2017/10/15 14:27:44 by vsporer           #+#    #+#             */
+/*   Updated: 2017/10/15 14:36:32 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		main(int ac, char **av, char **envp)
+char	*save_cmdline(char **cmdline, int mode)
 {
-	char	***env;
+	char			*tmp;
+	static char		**save = NULL;
 
-	av = NULL;
-	if (ac != 1)
-	{
-		msh_error(TM_ARGS, "minishell", DEFAULT);
-		return (1);
-	}
-	msh_signal();
-	exit_value(-1, SET);
-	env = get_env(envp);
-	wait_cmd(&env);
-	del_env(&env);
-	return (exit_value(0, CHECK));
+	tmp = NULL;
+	if (mode == SET)
+		save = cmdline;
+	else
+		tmp = *save;
+	return (tmp);
 }
