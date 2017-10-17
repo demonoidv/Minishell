@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/13 14:02:25 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/15 15:28:13 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/16 23:37:09 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void	signal_handler(int sig)
 
 	last = last_pid(0);
 	signal_value(sig);
-	if (last > 0)
+	if (sig == SIGHUP)
 	{
-		if (sig == SIGINT && last)
-			kill(last, SIGINT);
+		ft_putchar('\n');
+		exit(1);
 	}
 }

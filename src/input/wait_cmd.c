@@ -6,13 +6,13 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 16:02:30 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/15 15:42:38 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/16 23:20:32 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static unsigned long	msh_prompt(char mode)
+static unsigned long	msh_prompt(char mode, char ***env)
 {
 	int		i;
 	char	*pwd;
@@ -25,7 +25,11 @@ static unsigned long	msh_prompt(char mode)
 			i--;
 		if (pwd[i] == '/' && ft_strcmp(pwd, "/"))
 			i++;
-		ft_printf("\033[32;44m%s\033[0m\033[32m =>\033[0m ", &(pwd[i]));
+		if (search_var(env, "HOME") && !ft_strcmp(pwd, search_var(env, "HOME")))
+			ft_printf("\033[32;44m%s\033[0m\033[32m =>\033[0m ", "~");
+		else
+			ft_printf("\033[32;44m%s\033[0m\033[32m =>\033[0m ", &(pwd[i]));
+		ft_strdel(&pwd);
 	}
 	else if (mode == QUOTE)
 		ft_putstr("quote> ");
@@ -54,17 +58,12 @@ static char			*get_cmd_line(unsigned long curs)
 	i = 0;
 	cmd = NULL;
 	ft_bzero(buff, 2);
-	while (buff[0] != '\n' && read(0, buff, 1))
+	while (signal_value(-1) != 2 && read(0, buff, 1) > -1 && buff[0] != '\n')
 	{
-		if (signal_value(-1) == SIGINT)
-		{
-			ft_strdel(&cmd);
-			return (NULL);
-		}
 		if ((buff[0] >= 1 && buff[0] <= 6) || (buff[0] >= 14 && buff[0] <= 31)\
 		|| buff[0] == 127)
 			i = event_manager(&cmd, i, (char*)buff, curs);
-		else if (buff[0] != '\n')
+		else if (buff[0] != '\0')
 		{
 			if (buff[0] != '\t' || !cmd || (cmd && !cmd[i]))
 				ft_putchar(buff[0]);
@@ -76,6 +75,7 @@ static char			*get_cmd_line(unsigned long curs)
 				i++;
 			}
 		}
+		ft_bzero(buff, 2);
 	}
 	new_cmd_line(cmd, curs);
 	return (cmd);
@@ -87,7 +87,7 @@ static char			*get_cmd_quote(char *cmd, char quote)
 	unsigned long	curs;
 
 	tmp = NULL;
-	curs = msh_prompt(quote);
+	curs = msh_prompt(quote, NULL);
 	tmp = get_cmd_line((curs | NO_HISTORY));
 	cmd = ft_strjoin_free(cmd, "\n", 1);
 	if (tmp)
@@ -129,16 +129,17 @@ void				wait_cmd(char ****env)
 
 	quote = DEFAULT;
 	set_term_param(CMD);
-	curs = msh_prompt(quote);
+	curs = msh_prompt(quote, *env);
 	cmdline = get_cmd_line(curs);
-	while ((quote = check_escape(cmdline)))
+	while (signal_value(-1) != SIGINT && (quote = check_escape(cmdline)))
 		cmdline = get_cmd_quote(cmdline, quote);
+	if (signal_value(-1) == SIGINT)
+		ft_strdel(&cmdline);
+	signal_value(0);
 	set_term_param(DEFAULT);
 	clean_line(NULL, 0, 1);
-	if (cmdline && cmdline[0] && cmdline[0] != EOF)
+	if (cmdline && cmdline[0])
 		exec_switch(&cmdline, env);
-	if (*cmdline == EOF)
-		msh_exit(NULL);
 	ft_strdel(&cmdline);
 	if (exit_value(0, CHECK) < 0)
 		wait_cmd(env);

@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/13 12:43:09 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/15 15:24:44 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/16 18:00:46 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	msh_signal(void)
 	while (i < 30)
 	{
 		if (i != 9 && i != 17)
-		signal(i, &signal_handler);
+			signal(i, &signal_handler);
 		i++;
 	}
 }

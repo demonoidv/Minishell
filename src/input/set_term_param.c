@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 16:02:30 by vsporer           #+#    #+#             */
-/*   Updated: 2017/09/29 17:22:20 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/16 23:12:34 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	set_term_param(int mode)
 			term.c_lflag = term.c_lflag ^ ECHO;
 		if (term.c_lflag & ICANON)
 			term.c_lflag = term.c_lflag ^ ICANON;
-		term.c_cc[VMIN] = 1;
+		term.c_cc[VMIN] = 0;
+		term.c_cc[VTIME] = 1;
 	}
 	else if (mode == DEFAULT)
 		term = save;
