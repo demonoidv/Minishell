@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:26:06 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/14 18:21:26 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/18 18:26:55 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,17 @@ void	del_env(char ****env)
 
 	i = 0;
 	tmp = *env;
-	while (tmp && tmp[i])
+	if (tmp && *tmp)
 	{
-		ft_strdel(&(tmp[i][0]));
-		ft_strdel(&(tmp[i][1]));
-		i++;
+		while (tmp && tmp[i])
+		{
+			ft_strdel(&(tmp[i][0]));
+			ft_strdel(&(tmp[i][1]));
+			ft_memdel((void**)&(tmp[i]));
+			i++;
+		}
+		if (tmp)
+			ft_memdel((void**)&tmp);
 	}
-	if (*env && **env)
-		ft_memdel((void**)env);
+	*env = NULL;
 }

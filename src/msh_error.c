@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 17:04:23 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/16 23:46:52 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/18 14:35:07 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@ static void		exit_signal(void)
 	else if (ret == SIGSYS)
 		ft_dprintf(2, "%d non-existent system call invoked\t%s\n", \
 		last_pid(0), from);
+	else if (ret == SIGINT)
+	{
+		signal_value(0);
+		ft_putchar('\n');
+	}
 }
 
 void			msh_error(int nbr, char *from, int funcnum)
@@ -67,7 +72,7 @@ void			msh_error(int nbr, char *from, int funcnum)
 	err = check_funcnum(funcnum);
 	if (from && nbr)
 	{
-		if (nbr == NO_FILE)
+		if (nbr == NO_FILE || (nbr == NO_CMD && funcnum == ENV_ERR))
 			ft_dprintf(2, "%s: no such file or directory: %s\n", err, from);
 		else if (nbr == TM_ARGS)
 			ft_dprintf(2, "%s: too many arguments\n", from);

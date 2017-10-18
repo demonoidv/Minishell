@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 21:59:45 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/15 02:50:20 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/18 15:00:53 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int		var_to_value(char **str, char *line, int *mode, char ***env)
 		*str = ft_strjoin_free(*str, "~", 1);
 	else if (line[i] == '$' && !((*mode) & 3) && line[i + 1])
 	{
-		while (line[i + 1] && ft_isalpha(line[i + 1]))
+		while (line[i + 1] && ft_isalnum(line[i + 1]))
 			i++;
 		if (i > 0)
 		{

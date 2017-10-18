@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 11:45:12 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/07 20:25:22 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/18 16:24:27 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,8 @@ static void		replace_value(char **new, char ***env)
 	{
 		ft_strdel(&(env[i][1]));
 		if (new[1])
-			env[i][1] = new[1];
+			env[i][1] = ft_strdup(new[1]);
 	}
-	else
-		ft_strdel(&(new[1]));
-	ft_strdel(&(new[0]));
 }
 
 void			edit_env(char *arg, char ****env)
@@ -68,6 +65,8 @@ void			edit_env(char *arg, char ****env)
 		replace_value(new_var, *env);
 	else
 		add_var(new_var, env);
+	ft_strdel(&(new_var[0]));
+	ft_strdel(&(new_var[1]));
 	ft_memdel((void**)&new_var);
 }
 

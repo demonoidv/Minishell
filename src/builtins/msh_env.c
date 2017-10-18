@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 05:40:13 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/15 14:25:54 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/18 18:27:10 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void			msh_env(char **arg, char ***env)
 	}
 	else
 		env = env_cpy(env);
-	while (arg[i] && ft_strchr(arg[i], '='))
+	while (arg[i] && ft_strchr(arg[i], '=') && ft_strchr(arg[i], '=') != arg[i])
 	{
 		edit_env(arg[i], &env);
 		i++;

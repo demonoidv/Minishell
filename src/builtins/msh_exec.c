@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:24:40 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/15 14:04:13 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/18 16:10:56 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,27 +56,31 @@ static char		**join_env_var(char ***env)
 
 static int		exec_prog(char *path, char **args, char ***env)
 {
+	int		i;
 	int		status;
 	char	**envp;
 	pid_t	pid;
 
+	i = 0;
 	envp = join_env_var(env);
 	if ((pid = fork()) > 0 && waitpid(pid, &status, 0) == pid)
 	{
 		last_pid(pid);
+		while (envp[i])
+			ft_strdel(&(envp[i]));
+		ft_memdel((void**)&envp);
+		ft_strdel(&path);
 		if (WIFEXITED(status))
 			exit_value(WEXITSTATUS(status), (SET | STATEXIT));
 		else if (WIFSIGNALED(status))
-		{
 			exit_value(WTERMSIG(status), (SET | SIGEXIT));
+		if (WIFSIGNALED(status))
 			return (SIG_TERM);
-		}
 	}
 	else if (!pid && execve(path, args, envp) == -1)
 		return (EXC_FORM);
 	else if (pid == -1)
 		return (FORK_ERR);
-	ft_strdel(&path);
 	return (0);
 }
 
@@ -101,6 +105,7 @@ static int		search_path(char **bin, char *name, char *path)
 				ft_memdel((void**)&pathtab);
 				return (0);
 			}
+			ft_strdel(bin);
 			i++;
 		}
 		ft_memdel((void**)&pathtab);
