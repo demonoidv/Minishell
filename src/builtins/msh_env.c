@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 05:40:13 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/18 18:27:10 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/20 19:05:38 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,30 +46,27 @@ static void		display_env(char ***env)
 	}
 }
 
-void			msh_env(char **arg, char ***env)
+void			msh_env(char **arg, char ***env, char ***envp)
 {
 	int		i;
-	char	**clean_env;
+	char	**empty;
 
 	i = 0;
-	clean_env = NULL;
+	empty = NULL;
 	if (arg[i] && !ft_strcmp(arg[i], "-i"))
 	{
-		env = &clean_env;
+		envp = &empty;
 		i++;
 	}
 	else
-		env = env_cpy(env);
+		envp = envp ? env_cpy(envp) : env_cpy(env);
 	while (arg[i] && ft_strchr(arg[i], '=') && ft_strchr(arg[i], '=') != arg[i])
-	{
-		edit_env(arg[i], &env);
-		i++;
-	}
+		edit_env(arg[i++], &envp);
 	if (arg[i] && !ft_strcmp(arg[i], "env"))
-		msh_env(&(arg[i + 1]), env);
+		msh_env(&(arg[i + 1]), env, envp);
 	else if (arg[i])
-		msh_error(msh_exec(&(arg[i]), env), arg[i], ENV_ERR);
+		msh_error(msh_exec(&(arg[i]), env, envp), arg[i], ENV_ERR);
 	else
-		display_env(env);
-	del_env(&env);
+		display_env(envp);
+	del_env(&envp);
 }

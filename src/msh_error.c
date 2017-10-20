@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 17:04:23 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/18 14:35:07 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/20 20:07:14 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ void			msh_error(int nbr, char *from, int funcnum)
 	err = check_funcnum(funcnum);
 	if (from && nbr)
 	{
+		if (funcnum > 0 && funcnum <= 4)
+			exit_value(1, (SET | STATEXIT));
 		if (nbr == NO_FILE || (nbr == NO_CMD && funcnum == ENV_ERR))
 			ft_dprintf(2, "%s: no such file or directory: %s\n", err, from);
 		else if (nbr == TM_ARGS)
@@ -95,4 +97,6 @@ void			msh_error(int nbr, char *from, int funcnum)
 		else if (nbr == SIG_TERM)
 			exit_signal();
 	}
+	else if (!nbr)
+		exit_value(0, (SET | STATEXIT));
 }

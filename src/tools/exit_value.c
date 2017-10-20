@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:00:14 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/13 00:59:31 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/20 18:15:10 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ int		exit_value(int value, int mod)
 	else if (mod == (SET | STATEXIT))
 		ret_child = value;
 	else if (mod == (SET | SIGEXIT))
+	{
 		ret_sig = value;
+		ret_child = value + 128;
+	}
 	else if (mod == CHECK)
 		return (ret);
 	else if (mod == (CHECK | STATEXIT))

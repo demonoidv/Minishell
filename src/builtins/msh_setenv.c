@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 11:45:12 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/18 16:24:27 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/20 20:07:23 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ static void		add_var(char **new, char ****env)
 		tmp[i][2] = NULL;
 	}
 	tmp[i + 1] = NULL;
-	ft_memdel((void**)env);
+	if (env && *env && **env)
+		ft_memdel((void**)env);
 	*env = tmp;
 }
 

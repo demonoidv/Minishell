@@ -6,13 +6,14 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:24:40 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/18 16:10:56 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/20 20:07:20 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <signal.h>
 
 static int		check_directory(char *arg)
 {
@@ -63,17 +64,19 @@ static int		exec_prog(char *path, char **args, char ***env)
 
 	i = 0;
 	envp = join_env_var(env);
-	if ((pid = fork()) > 0 && waitpid(pid, &status, 0) == pid)
+	if ((pid = fork()) > 0 && waitpid(pid, &status, WUNTRACED) == pid)
 	{
 		last_pid(pid);
-		while (envp[i])
-			ft_strdel(&(envp[i]));
+		while (envp && envp[i])
+			ft_strdel(&(envp[i++]));
 		ft_memdel((void**)&envp);
 		ft_strdel(&path);
 		if (WIFEXITED(status))
 			exit_value(WEXITSTATUS(status), (SET | STATEXIT));
-		else if (WIFSIGNALED(status))
+		if (WIFSIGNALED(status))
 			exit_value(WTERMSIG(status), (SET | SIGEXIT));
+		if (WIFSTOPPED(status))
+			kill(pid, SIGKILL);
 		if (WIFSIGNALED(status))
 			return (SIG_TERM);
 	}
@@ -113,7 +116,7 @@ static int		search_path(char **bin, char *name, char *path)
 	return (NO_CMD);
 }
 
-int				msh_exec(char **arg, char ***env)
+int				msh_exec(char **arg, char ***env, char ***envp)
 {
 	int		ret;
 	char	*tmp;
@@ -128,13 +131,13 @@ int				msh_exec(char **arg, char ***env)
 		else if (access(arg[0], X_OK) == -1)
 			ret = PERM_DEN;
 		else
-			ret = exec_prog(ft_strdup(arg[0]), arg, env);
+			ret = exec_prog(ft_strdup(arg[0]), arg, envp);
 		if (!(*tmp))
 			*tmp = '/';
 		return (ret);
 	}
 	else if (!(ret = search_path(&tmp, arg[0], search_var(env, "PATH"))))
-		return (exec_prog(tmp, arg, env));
+		return (exec_prog(tmp, arg, envp));
 	else
 		return (ret);
 }

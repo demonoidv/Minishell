@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 15:47:07 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/18 14:43:40 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/20 20:07:26 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,11 @@ unsigned long	get_cursor_pos(void);
 /*
 **	BUILTINS FUNCTION
 */
-int				msh_exec(char **arg, char ***env);
+int				msh_exec(char **arg, char ***env, char ***envp);
 void			msh_exit(char **arg);
 void			msh_cd(char **arg, char ****env);
 void			msh_echo(char **arg);
-void			msh_env(char **arg, char ***env);
+void			msh_env(char **arg, char ***env, char ***envp);
 void			msh_setenv(char **arg, char ****env);
 void			msh_unsetenv(char **arg, char ****env);
 void			edit_env(char *arg, char ****env);

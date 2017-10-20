@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/13 12:43:09 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/16 18:00:46 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/20 18:27:12 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,14 @@ void	msh_signal(void)
 	int		i;
 
 	i = 1;
-	while (i < 30)
-	{
-		if (i != 9 && i != 17)
-			signal(i, &signal_handler);
-		i++;
-	}
+	signal(SIGHUP, &signal_handler);
+	signal(SIGINT, &signal_handler);
+	signal(SIGTERM, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
+	signal(SIGTTIN, SIG_IGN);
+	signal(SIGTTOU, SIG_IGN);
+	signal(SIGIO, SIG_IGN);
+	signal(SIGWINCH, SIG_IGN);
+	signal(SIGINFO, SIG_IGN);
 }
