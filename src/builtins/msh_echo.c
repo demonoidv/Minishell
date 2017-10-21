@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/07 21:16:40 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/07 21:30:13 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/21 20:48:37 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,5 @@ void	msh_echo(char **arg)
 			ft_putchar(' ');
 	}
 	ft_putchar('\n');
+	exit_value(0, (SET | STATEXIT));
 }

@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/07 20:27:27 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/07 20:47:17 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/21 20:53:15 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,5 @@ void			msh_unsetenv(char **arg, char ****env)
 		del_var(arg[i], *env);
 		i++;
 	}
+	exit_value(0, (SET | STATEXIT));
 }

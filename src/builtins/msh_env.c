@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 05:40:13 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/20 19:05:38 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/21 20:51:15 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static void		display_env(char ***env)
 		ft_printf("%s=%s\n", env[i][0], env[i][1]);
 		i++;
 	}
+	exit_value(0, (SET | STATEXIT));
 }
 
 void			msh_env(char **arg, char ***env, char ***envp)

@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 03:59:19 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/20 19:02:46 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/21 20:45:40 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,12 @@
 static void		move_wd(char *path, char ****env)
 {
 	char			*tmp;
-	struct stat		st;
 
 	tmp = NULL;
-	if (access(path, F_OK) == -1)
-		msh_error(NO_FILE, path, CD_ERR);
-	else if (!(stat(path, &st)) && !S_ISDIR(st.st_mode))
+	if (check_directory(path) == NO_DIR)
 		msh_error(NO_DIR, path, CD_ERR);
+	else if (access(path, F_OK) == -1)
+		msh_error(NO_FILE, path, CD_ERR);
 	else if (access(path, X_OK) == -1)
 		msh_error(PERM_DEN, path, CD_ERR);
 	else
@@ -33,6 +32,7 @@ static void		move_wd(char *path, char ****env)
 		{
 			tmp = ft_strjoin_free("OLDPWD=", tmp, 2);
 			edit_env(tmp, env);
+			exit_value(0, (SET | STATEXIT));
 		}
 		ft_strdel(&tmp);
 	}

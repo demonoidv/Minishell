@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 21:59:45 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/18 15:00:53 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/21 20:11:09 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int		var_to_value(char **str, char *line, int *mode, char ***env)
 			ft_strdel(&tmp);
 		}
 		else if (line[++i] == '?')
-			*str = ft_strjoin_free(*str, ft_itoa(exit_value(0, 9)), 3);
+			*str = ft_strjoin_free(*str, ft_itoa(exit_value(0, (1 | 8))), 3);
 	}
 	else
 		*str = ft_strjoin_free(*str, "$", 1);

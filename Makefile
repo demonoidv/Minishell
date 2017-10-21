@@ -6,7 +6,7 @@
 #    By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/08/20 14:41:19 by vsporer           #+#    #+#              #
-#    Updated: 2017/10/20 14:58:28 by vsporer          ###   ########.fr        #
+#    Updated: 2017/10/21 19:37:11 by vsporer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,6 +65,7 @@ TOOLS =				$(PATH_TOOLS)count_var.c\
 					$(PATH_TOOLS)last_pid.c\
 					$(PATH_TOOLS)save_cmdline.c\
 					$(PATH_TOOLS)signal_value.c\
+					$(PATH_TOOLS)check_directory.c\
 					$(PATH_TOOLS)next_cmdline.c
 
 OBJ =				$(patsubst $(PATH_SRC)%.c, $(PATH_OBJ)%.o, $(SRC))\

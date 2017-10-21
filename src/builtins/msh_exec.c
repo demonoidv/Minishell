@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:24:40 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/20 20:07:20 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/21 19:36:46 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
-
-static int		check_directory(char *arg)
-{
-	int				ret;
-	struct stat		st;
-
-	ret = NO_FILE;
-	arg[ft_strlen(arg) - 1] = '\0';
-	if (!stat(arg, &st))
-	{
-		if (S_ISDIR(st.st_mode))
-			ret = IS_DIR;
-		else
-			ret = NO_DIR;
-	}
-	arg[ft_strlen(arg)] = '/';
-	return (ret);
-}
 
 static char		**join_env_var(char ***env)
 {
@@ -101,11 +83,16 @@ static int		search_path(char **bin, char *name, char *path)
 			if (pathtab[i][ft_strlen(pathtab[i]) - 1] != '/')
 				pathtab[i] = ft_strjoin_free(pathtab[i], "/", 1);
 			*bin = ft_strjoin_free(pathtab[i], name, 1);
-			if (!access(*bin, F_OK) && !access(*bin, X_OK))
+			if (!access(*bin, F_OK))
 			{
 				while (pathtab[++i])
 					ft_strdel(&(pathtab[i]));
 				ft_memdel((void**)&pathtab);
+				if (access(*bin, X_OK) == -1)
+				{
+					ft_strdel(bin);
+					return (PERM_DEN);
+				}
 				return (0);
 			}
 			ft_strdel(bin);

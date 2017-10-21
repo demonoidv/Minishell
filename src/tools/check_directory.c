@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   var_to_value.c                                     :+:      :+:    :+:   */
+/*   check_directory.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/13 15:53:31 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/14 23:42:57 by vsporer          ###   ########.fr       */
+/*   Created: 2017/10/11 20:24:40 by vsporer           #+#    #+#             */
+/*   Updated: 2017/10/21 19:42:54 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void			var_to_value(char **arg, char ***env)
+int		check_directory(char *arg)
 {
-	int		i;
-	int		j;
-	char	*tmp;
+	int				ret;
+	char			*tmp;
+	struct stat		st;
 
-	i = 0;
-	while (arg && arg[i])
+	ret = NO_FILE;
+	tmp = ft_strdup(arg);
+	if (tmp && tmp[ft_strlen(tmp) - 1] == '/')
+		tmp[ft_strlen(tmp) - 1] = '\0';
+	if (!stat(tmp, &st))
 	{
-		j = 0;
-		while (arg[i][j])
-		{
-			if (arg[i][j] == '~' && j > 0 && arg[i][j - 1] == '\\')
-				
-			else 
-			j++;
-		}
-		i++;
+		if (S_ISDIR(st.st_mode))
+			ret = IS_DIR;
+		else
+			ret = NO_DIR;
 	}
+	ft_strdel(&tmp);
+	return (ret);
 }

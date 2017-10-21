@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 11:45:12 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/20 20:07:23 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/21 20:52:44 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,6 @@ void			msh_setenv(char **arg, char ****env)
 	}
 	if (arg[i])
 		msh_error(STX_ERR, arg[i], SENV_ERR);
+	else
+		exit_value(0, (SET | STATEXIT));
 }

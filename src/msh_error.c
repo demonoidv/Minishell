@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 17:04:23 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/20 20:07:14 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/21 22:13:42 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 static char		*check_funcnum(int funcnum)
 {
+	if (funcnum > 0 && funcnum <= 4)
+		exit_value(1, (SET | STATEXIT));
 	if (funcnum == ENV_ERR)
 		return ("env");
 	else if (funcnum == SENV_ERR)
@@ -27,76 +29,66 @@ static char		*check_funcnum(int funcnum)
 		return ("minishell");
 }
 
-static void		exit_signal(void)
+static char		*signal_message(int sig)
 {
-	int		ret;
-	char	*from;
+	char	*(msgtab[13]);
 
-	from = save_cmdline(NULL, CHECK);
-	ret = exit_value(-1, (CHECK | SIGEXIT));
-	if (ret == SIGQUIT)
-		ft_dprintf(2, "%d quit\t%s\n", last_pid(0), from);
-	else if (ret == SIGILL)
-		ft_dprintf(2, "%d illegal instruction\t%s\n", last_pid(0), from);
-	else if (ret == SIGKILL)
-		ft_dprintf(2, "%d killed\t%s\n", last_pid(0), from);
-	else if (ret == SIGHUP)
-		ft_dprintf(2, "%d hang up\t%s\n", last_pid(0), from);
-	else if (ret == SIGTRAP)
-		ft_dprintf(2, "%d trace trap\t%s\n", last_pid(0), from);
-	else if (ret == SIGABRT)
-		ft_dprintf(2, "%d abort\t%s\n", last_pid(0), from);
-	else if (ret == SIGEMT)
-		ft_dprintf(2, "%d emulate instruction executed\t%s\n", \
-		last_pid(0), from);
-	else if (ret == SIGFPE)
-		ft_dprintf(2, "%d floating-point exception\t%s\n", last_pid(0), from);
-	else if (ret == SIGBUS)
-		ft_dprintf(2, "%d bus error\t%s\n", last_pid(0), from);
-	else if (ret == SIGSEGV)
-		ft_dprintf(2, "%d segmentation fault\t%s\n", last_pid(0), from);
-	else if (ret == SIGSYS)
-		ft_dprintf(2, "%d non-existent system call invoked\t%s\n", \
-		last_pid(0), from);
-	else if (ret == SIGINT)
-	{
-		signal_value(0);
-		ft_putchar('\n');
-	}
+	msgtab[SIGQUIT] = "%d quit \t%s\n";
+	msgtab[SIGILL] = "%d illegal instruction \t%s\n";
+	msgtab[SIGKILL] = "%d killed \t%s\n";
+	msgtab[SIGHUP] = "%d hang up \t%s\n";
+	msgtab[SIGTRAP] = "%d trace trap \t%s\n";
+	msgtab[SIGABRT] = "%d abort \t%s\n";
+	msgtab[SIGEMT] = "%d emulate instruction executed \t%s\n";
+	msgtab[SIGFPE] = "%d floating-point exception \t%s\n";
+	msgtab[SIGBUS] = "%d bus error \t%s\n";
+	msgtab[SIGSEGV] = "%d segmentation fault \t%s\n";
+	msgtab[SIGSYS] = "%d non-existent system call invoked \t%s\n";
+	return (msgtab[sig]);
+}
+
+static char		*error_message(int nbr)
+{
+	char	*(msgtab[10]);
+
+	msgtab[0] = "%s: no such file or directory: %s\n";
+	msgtab[1] = "%s: too many arguments\n";
+	msgtab[2] = "%s: command not found: %s\n";
+	msgtab[3] = "%s: syntax error: %s\n";
+	msgtab[4] = "%s: %s not set\n";
+	msgtab[5] = "%s: permission denied: %s\n";
+	msgtab[6] = "%s: not a directory: %s\n";
+	msgtab[7] = "%s: is a directory: %s\n";
+	msgtab[8] = "%s: exec format error: %s\n";
+	msgtab[9] = "%s: can not creat new process: %s\n";
+	return (msgtab[nbr - 1]);
 }
 
 void			msh_error(int nbr, char *from, int funcnum)
 {
+	int		sig;
 	char	*err;
 
-	err = check_funcnum(funcnum);
-	if (from && nbr)
+	if (from && nbr && nbr != SIG_TERM)
 	{
-		if (funcnum > 0 && funcnum <= 4)
-			exit_value(1, (SET | STATEXIT));
-		if (nbr == NO_FILE || (nbr == NO_CMD && funcnum == ENV_ERR))
-			ft_dprintf(2, "%s: no such file or directory: %s\n", err, from);
-		else if (nbr == TM_ARGS)
-			ft_dprintf(2, "%s: too many arguments\n", from);
-		else if (nbr == NO_CMD)
-			ft_dprintf(2, "%s: command not found: %s\n", err, from);
-		else if (nbr == STX_ERR)
-			ft_dprintf(2, "%s: %s: syntax error\n", err, from);
-		else if (nbr == VAR_NSET)
-			ft_dprintf(2, "%s: %s not set\n", err, from);
-		else if (nbr == PERM_DEN)
-			ft_dprintf(2, "%s: permission denied: %s\n", err, from);
-		else if (nbr == NO_DIR)
-			ft_dprintf(2, "%s: not a directory: %s\n", err, from);
-		else if (nbr == IS_DIR)
-			ft_dprintf(2, "%s: is a directory: %s\n", err, from);
-		else if (nbr == EXC_FORM)
-			ft_dprintf(2, "%s: exec format error: %s\n", err, from);
-		else if (nbr == FORK_ERR)
-			ft_dprintf(2, "%s: can not creat new process: %s\n", err, from);
-		else if (nbr == SIG_TERM)
-			exit_signal();
+		err = check_funcnum(funcnum);
+		if (nbr == NO_CMD && funcnum == ENV_ERR)
+			nbr = NO_FILE;
+		if (nbr == TM_ARGS)
+			ft_dprintf(2, error_message(nbr), from);
+		else if (nbr <= 10)
+			ft_dprintf(2, error_message(nbr), err, from);
 	}
-	else if (!nbr)
-		exit_value(0, (SET | STATEXIT));
+	else if (from && nbr == SIG_TERM)
+	{
+		sig = exit_value(-1, (CHECK | SIGEXIT));
+		from = save_cmdline(NULL, CHECK);
+		if (sig == SIGINT)
+		{
+			signal_value(0);
+			ft_putchar('\n');
+		}
+		else if (sig && sig != SIGINT && sig <= 12)
+			ft_dprintf(2, signal_message(sig), last_pid(0), from);
+	}
 }
