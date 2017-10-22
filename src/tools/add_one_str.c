@@ -1,32 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsub.c                                        :+:      :+:    :+:   */
+/*   add_one_str.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/24 16:59:18 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/22 14:45:02 by vsporer          ###   ########.fr       */
+/*   Created: 2017/10/22 14:32:31 by vsporer           #+#    #+#             */
+/*   Updated: 2017/10/22 14:33:19 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strsub(char const *s, unsigned int start, size_t len)
+char	**add_one_str(char **tab, int len)
 {
-	char	*dest;
-	size_t	i;
+	int		i;
+	char	**new;
 
-	if ((dest = ft_strnew((len))) && s)
+	i = 0;
+	if ((new = (char**)malloc(sizeof(char*) * (len + 1))))
 	{
-		i = 0;
-		while (i < len)
+		while (tab && i < len)
 		{
-			dest[i] = s[start + i];
+			new[i] = tab[i];
 			i++;
 		}
-		dest[i] = 0;
-		return (dest);
+		if (!tab)
+			new[1] = NULL;
+		new[i] = NULL;
+		ft_memdel((void**)&(tab));
+		tab = new;
 	}
-	return (NULL);
+	return (tab);
 }

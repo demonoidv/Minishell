@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsub.c                                        :+:      :+:    :+:   */
+/*   new_cmd_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/24 16:59:18 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/22 14:45:02 by vsporer          ###   ########.fr       */
+/*   Created: 2017/10/22 14:23:25 by vsporer           #+#    #+#             */
+/*   Updated: 2017/10/22 14:25:50 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strsub(char const *s, unsigned int start, size_t len)
+void	new_cmd_line(char *cmd, unsigned long curs)
 {
-	char	*dest;
-	size_t	i;
-
-	if ((dest = ft_strnew((len))) && s)
-	{
-		i = 0;
-		while (i < len)
-		{
-			dest[i] = s[start + i];
-			i++;
-		}
-		dest[i] = 0;
-		return (dest);
-	}
-	return (NULL);
+	clean_line(cmd, curs, DEFAULT);
+	ft_putstr(cmd);
+	ft_putstr("\v\r");
 }

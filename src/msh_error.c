@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 17:04:23 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/21 22:13:42 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/22 16:07:22 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char		*signal_message(int sig)
 
 static char		*error_message(int nbr)
 {
-	char	*(msgtab[10]);
+	char	*(msgtab[11]);
 
 	msgtab[0] = "%s: no such file or directory: %s\n";
 	msgtab[1] = "%s: too many arguments\n";
@@ -61,6 +61,7 @@ static char		*error_message(int nbr)
 	msgtab[7] = "%s: is a directory: %s\n";
 	msgtab[8] = "%s: exec format error: %s\n";
 	msgtab[9] = "%s: can not creat new process: %s\n";
+	msgtab[10] = "%s: error on TTY read: %s\n";
 	return (msgtab[nbr - 1]);
 }
 
@@ -76,7 +77,7 @@ void			msh_error(int nbr, char *from, int funcnum)
 			nbr = NO_FILE;
 		if (nbr == TM_ARGS)
 			ft_dprintf(2, error_message(nbr), from);
-		else if (nbr <= 10)
+		else if (nbr <= 11)
 			ft_dprintf(2, error_message(nbr), err, from);
 	}
 	else if (from && nbr == SIG_TERM)

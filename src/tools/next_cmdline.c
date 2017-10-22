@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/02 23:17:18 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/15 02:43:06 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/22 14:51:42 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	search_separator(char *cmdline, int *mode, char **dest)
 	}
 	if (((*mode) & ESC_MOD))
 		*mode = ((*mode) ^ ESC_MOD);
-	if (i)
+	if (i && dest)
 		*dest = ft_strsub(cmdline, 0, i);
 	return (i);
 }
@@ -51,7 +51,7 @@ char		**next_cmdline(char *cmdline)
 	{
 		while (cmdline[i] == ';' || cmdline[i] == ' ' || cmdline[i] == '\t' || \
 		cmdline[i] == '\n' || (cmdline[i] == '\\' && cmdline[i + 1] == '\n'))
-		i++;
+			i++;
 		multicmd = add_one_str(multicmd, j + 1);
 		i += search_separator(&(cmdline[i]), &mode, &(multicmd[j]));
 		if (multicmd && multicmd[j])

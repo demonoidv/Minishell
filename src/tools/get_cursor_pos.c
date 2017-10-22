@@ -1,32 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsub.c                                        :+:      :+:    :+:   */
+/*   get_cursor_pos.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/24 16:59:18 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/22 14:45:02 by vsporer          ###   ########.fr       */
+/*   Created: 2017/10/22 14:31:16 by vsporer           #+#    #+#             */
+/*   Updated: 2017/10/22 14:33:17 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strsub(char const *s, unsigned int start, size_t len)
+unsigned long	get_cursor_pos(void)
 {
-	char	*dest;
-	size_t	i;
+	int				i;
+	char			buff[10];
+	unsigned long	pos;
 
-	if ((dest = ft_strnew((len))) && s)
+	i = 0;
+	pos = 0;
+	ft_bzero(buff, 10);
+	ft_putstr("\033[6n");
+	if (read(0, buff, 2) != -1 && !ft_strcmp(buff, "\033["))
 	{
-		i = 0;
-		while (i < len)
+		ft_bzero(buff, 10);
+		while (read(0, &(buff[i]), 1) != -1 && buff[i] != 'R')
 		{
-			dest[i] = s[start + i];
+			if (buff[i] == ';')
+			{
+				pos = (ft_atoi(buff) << 16);
+				i = -1;
+			}
 			i++;
 		}
-		dest[i] = 0;
-		return (dest);
+		pos += ft_atoi(buff);
 	}
-	return (NULL);
+	return (pos);
 }

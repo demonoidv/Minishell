@@ -6,7 +6,7 @@
 #    By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/08/20 14:41:19 by vsporer           #+#    #+#              #
-#    Updated: 2017/10/21 19:37:11 by vsporer          ###   ########.fr        #
+#    Updated: 2017/10/22 17:16:43 by vsporer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,8 +45,7 @@ INPUT =				$(PATH_INPUT)wait_cmd.c\
 					$(PATH_INPUT)list.c\
 					$(PATH_INPUT)prev_cmd.c\
 					$(PATH_INPUT)clean_line.c\
-					$(PATH_INPUT)set_term_param.c\
-					$(PATH_INPUT)tools.c
+					$(PATH_INPUT)set_term_param.c
 
 BUILTINS =			$(PATH_BUILTINS)msh_exit.c\
 					$(PATH_BUILTINS)msh_cd.c\
@@ -66,6 +65,11 @@ TOOLS =				$(PATH_TOOLS)count_var.c\
 					$(PATH_TOOLS)save_cmdline.c\
 					$(PATH_TOOLS)signal_value.c\
 					$(PATH_TOOLS)check_directory.c\
+					$(PATH_TOOLS)new_cmd_line.c\
+					$(PATH_TOOLS)check_escape.c\
+					$(PATH_TOOLS)add_one_str.c\
+					$(PATH_TOOLS)get_cursor_pos.c\
+					$(PATH_TOOLS)check_father.c\
 					$(PATH_TOOLS)next_cmdline.c
 
 OBJ =				$(patsubst $(PATH_SRC)%.c, $(PATH_OBJ)%.o, $(SRC))\

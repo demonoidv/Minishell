@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 15:47:07 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/21 23:21:59 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/22 17:17:18 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@
 # define IS_DIR 8
 # define EXC_FORM 9
 # define FORK_ERR 10
-# define SIG_TERM 11
+# define TTY_ERR 11
+# define SIG_TERM 12
 
 typedef struct		s_dlist
 {
@@ -70,10 +71,15 @@ int				signal_value(int sig);
 int				check_directory(char *arg);
 void			del_cmdtab(char ***cmdtab);
 void			del_env(char ****env);
+void			new_cmd_line(char *cmd, unsigned long curs);
+void			check_father(void);
+char			check_escape(char *line);
 char			*search_var(char ***env, char *name);
 char			*save_cmdline(char **cmdline, int mode);
 char			**next_cmdline(char *cmdline);
+char			**add_one_str(char **tab, int len);
 pid_t			last_pid(pid_t pid);
+unsigned long	get_cursor_pos(void);
 /*
 **	CORE FUNCTION
 */
@@ -81,7 +87,6 @@ int				msh_switch(char **cmdtab, char ****env);
 void			msh_error(int nbr, char *from, int funcnum);
 void			msh_signal(void);
 char			***get_env(char **environ);
-char			**add_one_str(char **tab, int len);
 void			signal_handler(int sig);
 /*
 **	INPUT FUNCTION
@@ -98,9 +103,7 @@ void			wait_cmd(char ****env);
 char			**line_to_tab(char *line, char ***env);
 char			*del_char(char *cmd, int pos, unsigned long curs);
 char			*del_frontchar(char *cmd, int pos, unsigned long curs);
-char			check_escape(char *line);
 t_dlist			*new_dlist(const char *cmd);
-unsigned long	get_cursor_pos(void);
 /*
 **	BUILTINS FUNCTION
 */

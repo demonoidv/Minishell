@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 16:02:30 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/20 14:15:15 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/22 17:17:29 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,6 @@ static unsigned long	msh_prompt(char mode, char ***env)
 	else
 		ft_putstr("\033[32m=>\033[0m ");
 	return (get_cursor_pos());
-}
-
-static void			new_cmd_line(char *cmd, unsigned long curs)
-{
-	clean_line(cmd, curs, DEFAULT);
-	ft_putstr(cmd);
-	ft_putstr("\v\r");
 }
 
 static char			*get_cmd_line(unsigned long curs)
@@ -128,6 +121,7 @@ void				wait_cmd(char ****env)
 	unsigned long	curs;
 
 	quote = DEFAULT;
+	check_father();
 	set_term_param(CMD);
 	curs = msh_prompt(quote, *env);
 	cmdline = get_cmd_line(curs);

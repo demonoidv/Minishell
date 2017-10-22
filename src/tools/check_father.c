@@ -1,32 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsub.c                                        :+:      :+:    :+:   */
+/*   check_father.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/24 16:59:18 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/22 14:45:02 by vsporer          ###   ########.fr       */
+/*   Created: 2017/10/22 17:12:56 by vsporer           #+#    #+#             */
+/*   Updated: 2017/10/22 17:18:24 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strsub(char const *s, unsigned int start, size_t len)
+void	check_father(void)
 {
-	char	*dest;
-	size_t	i;
+	static pid_t	ppid = 0;
 
-	if ((dest = ft_strnew((len))) && s)
+	if (!ppid)
+		ppid = getppid();
+	else if (ppid != getppid())
 	{
-		i = 0;
-		while (i < len)
-		{
-			dest[i] = s[start + i];
-			i++;
-		}
-		dest[i] = 0;
-		return (dest);
+		msh_error(TTY_ERR, "I/O error", DEFAULT);
+		exit(1);
 	}
-	return (NULL);
 }
