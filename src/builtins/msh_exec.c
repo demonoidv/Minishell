@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:24:40 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/21 19:36:46 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/22 20:46:38 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,10 @@ static int		exec_prog(char *path, char **args, char ***env)
 
 	i = 0;
 	envp = join_env_var(env);
-	if ((pid = fork()) > 0 && waitpid(pid, &status, WUNTRACED) == pid)
+	if ((pid = fork()) > 0/*&& waitpid(pid, &status, WUNTRACED) == pid*/)
 	{
+		while (waitpid(pid, &status, (WUNTRACED | WNOHANG)) != pid)
+			check_father();
 		last_pid(pid);
 		while (envp && envp[i])
 			ft_strdel(&(envp[i++]));
