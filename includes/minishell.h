@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 15:47:07 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/22 17:17:18 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/23 13:14:29 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,6 @@
 # define NO_HISTORY 32768
 # define CURSOR_X(n) n >> 16
 # define CURSOR_Y(n) n & 255
-/*
-**	ERROR CODE
-*/
 # define ENV_ERR 1
 # define CD_ERR 2
 # define EXI_ERR 3
@@ -60,60 +57,60 @@ typedef struct		s_dlist
 	struct s_dlist	*prev;
 	struct s_dlist	*next;
 }					t_dlist;
-
 /*
 **	TOOLS
 */
-int				count_var(char ***env);
-int				msh_tablen(char **tab);
-int				exit_value(int value, int mod);
-int				signal_value(int sig);
-int				check_directory(char *arg);
-void			del_cmdtab(char ***cmdtab);
-void			del_env(char ****env);
-void			new_cmd_line(char *cmd, unsigned long curs);
-void			check_father(void);
-char			check_escape(char *line);
-char			*search_var(char ***env, char *name);
-char			*save_cmdline(char **cmdline, int mode);
-char			**next_cmdline(char *cmdline);
-char			**add_one_str(char **tab, int len);
-pid_t			last_pid(pid_t pid);
-unsigned long	get_cursor_pos(void);
+int					count_var(char ***env);
+int					msh_tablen(char **tab);
+int					exit_value(int value, int mod);
+int					signal_value(int sig);
+int					check_directory(char *arg);
+void				del_cmdtab(char ***cmdtab);
+void				del_env(char ****env);
+void				check_father(void);
+char				check_escape(char *line);
+char				*search_var(char ***env, char *name);
+char				*save_cmdline(char **cmdline, int mode);
+char				*new_cmd_line(char *cmd, unsigned long curs);
+char				**next_cmdline(char *cmdline);
+char				**add_one_str(char **tab, int len);
+pid_t				last_pid(pid_t pid);
+unsigned long		get_cursor_pos(void);
 /*
 **	CORE FUNCTION
 */
-int				msh_switch(char **cmdtab, char ****env);
-void			msh_error(int nbr, char *from, int funcnum);
-void			msh_signal(void);
-char			***get_env(char **environ);
-void			signal_handler(int sig);
+int					msh_switch(char **cmdtab, char ****env);
+void				msh_error(int nbr, char *from, int funcnum);
+void				msh_signal(void);
+char				***get_env(char **environ);
+void				signal_handler(int sig);
 /*
 **	INPUT FUNCTION
 */
-int				event_manager(char **cmd, int pos, char *c, unsigned long curs);
-void			clean_line(char *cmd, unsigned long pos, int mode);
-void			prev_cmd(char **cmd, int mode);
-void			set_term_param(int mode);
-void			add_dlist(t_dlist **adlist, t_dlist *new);
-void			add_current(t_dlist **dlist, char **cmd);
-void			del_dlist(t_dlist **todel);
-void			up_dlist(t_dlist **toup);
-void			wait_cmd(char ****env);
-char			**line_to_tab(char *line, char ***env);
-char			*del_char(char *cmd, int pos, unsigned long curs);
-char			*del_frontchar(char *cmd, int pos, unsigned long curs);
-t_dlist			*new_dlist(const char *cmd);
+int					event_manager(char **cmd, int pos, char *c, \
+					unsigned long curs);
+void				clean_line(char *cmd, unsigned long pos, int mode);
+void				prev_cmd(char **cmd, int mode);
+void				set_term_param(int mode);
+void				add_dlist(t_dlist **adlist, t_dlist *new);
+void				add_current(t_dlist **dlist, char **cmd);
+void				del_dlist(t_dlist **todel);
+void				up_dlist(t_dlist **toup);
+void				wait_cmd(char ****env);
+char				**line_to_tab(char *line, char ***env);
+char				*del_char(char *cmd, int pos, unsigned long curs);
+char				*del_frontchar(char *cmd, int pos, unsigned long curs);
+t_dlist				*new_dlist(const char *cmd);
 /*
 **	BUILTINS FUNCTION
 */
-int				msh_exec(char **arg, char ***env, char ***envp);
-void			msh_exit(char **arg);
-void			msh_cd(char **arg, char ****env);
-void			msh_echo(char **arg);
-void			msh_env(char **arg, char ***env, char ***envp);
-void			msh_setenv(char **arg, char ****env);
-void			msh_unsetenv(char **arg, char ****env);
-void			edit_env(char *arg, char ****env);
+int					msh_exec(char **arg, char ***env, char ***envp);
+void				msh_exit(char **arg);
+void				msh_cd(char **arg, char ****env);
+void				msh_echo(char **arg);
+void				msh_env(char **arg, char ***env, char ***envp);
+void				msh_setenv(char **arg, char ****env);
+void				msh_unsetenv(char **arg, char ****env);
+void				edit_env(char *arg, char ****env);
 
 #endif

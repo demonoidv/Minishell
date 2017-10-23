@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:24:40 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/22 20:46:38 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/23 12:56:59 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,19 @@ static char		**join_env_var(char ***env)
 	return (envp);
 }
 
+static int		end_exec(int status, pid_t pid)
+{
+	if (WIFEXITED(status))
+		exit_value(WEXITSTATUS(status), (SET | STATEXIT));
+	if (WIFSIGNALED(status))
+		exit_value(WTERMSIG(status), (SET | SIGEXIT));
+	if (WIFSTOPPED(status))
+		kill(pid, SIGKILL);
+	if (WIFSIGNALED(status))
+		return (SIG_TERM);
+	return (0);
+}
+
 static int		exec_prog(char *path, char **args, char ***env)
 {
 	int		i;
@@ -46,7 +59,7 @@ static int		exec_prog(char *path, char **args, char ***env)
 
 	i = 0;
 	envp = join_env_var(env);
-	if ((pid = fork()) > 0/*&& waitpid(pid, &status, WUNTRACED) == pid*/)
+	if ((pid = fork()) > 0)
 	{
 		while (waitpid(pid, &status, (WUNTRACED | WNOHANG)) != pid)
 			check_father();
@@ -55,13 +68,7 @@ static int		exec_prog(char *path, char **args, char ***env)
 			ft_strdel(&(envp[i++]));
 		ft_memdel((void**)&envp);
 		ft_strdel(&path);
-		if (WIFEXITED(status))
-			exit_value(WEXITSTATUS(status), (SET | STATEXIT));
-		if (WIFSIGNALED(status))
-			exit_value(WTERMSIG(status), (SET | SIGEXIT));
-		if (WIFSTOPPED(status))
-			kill(pid, SIGKILL);
-		if (WIFSIGNALED(status))
+		if (end_exec(status, pid))
 			return (SIG_TERM);
 	}
 	else if (!pid && execve(path, args, envp) == -1)
@@ -71,37 +78,32 @@ static int		exec_prog(char *path, char **args, char ***env)
 	return (0);
 }
 
-static int		search_path(char **bin, char *name, char *path)
+static int		search_path(char **bin, char *name, char **pathtab)
 {
 	int		i;
-	char	**pathtab;
 
 	i = 0;
-	if (path)
+	while (pathtab && pathtab[i])
 	{
-		pathtab = ft_strsplit(path, ':');
-		while (pathtab && pathtab[i])
+		if (pathtab[i][ft_strlen(pathtab[i]) - 1] != '/')
+			pathtab[i] = ft_strjoin_free(pathtab[i], "/", 1);
+		*bin = ft_strjoin_free(pathtab[i], name, 1);
+		if (!access(*bin, F_OK))
 		{
-			if (pathtab[i][ft_strlen(pathtab[i]) - 1] != '/')
-				pathtab[i] = ft_strjoin_free(pathtab[i], "/", 1);
-			*bin = ft_strjoin_free(pathtab[i], name, 1);
-			if (!access(*bin, F_OK))
+			while (pathtab[++i])
+				ft_strdel(&(pathtab[i]));
+			ft_memdel((void**)&pathtab);
+			if (access(*bin, X_OK) == -1)
 			{
-				while (pathtab[++i])
-					ft_strdel(&(pathtab[i]));
-				ft_memdel((void**)&pathtab);
-				if (access(*bin, X_OK) == -1)
-				{
-					ft_strdel(bin);
-					return (PERM_DEN);
-				}
-				return (0);
+				ft_strdel(bin);
+				return (PERM_DEN);
 			}
-			ft_strdel(bin);
-			i++;
+			return (0);
 		}
-		ft_memdel((void**)&pathtab);
+		ft_strdel(bin);
+		i++;
 	}
+	ft_memdel((void**)&pathtab);
 	return (NO_CMD);
 }
 
@@ -125,7 +127,8 @@ int				msh_exec(char **arg, char ***env, char ***envp)
 			*tmp = '/';
 		return (ret);
 	}
-	else if (!(ret = search_path(&tmp, arg[0], search_var(env, "PATH"))))
+	else if (!(ret = search_path(&tmp, arg[0], \
+	ft_strsplit(search_var(env, "PATH"), ':'))))
 		return (exec_prog(tmp, arg, envp));
 	else
 		return (ret);

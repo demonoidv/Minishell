@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_wcsrlen.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/23 12:26:12 by vsporer           #+#    #+#             */
+/*   Updated: 2017/10/23 12:26:34 by vsporer          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
 size_t	ft_wcsrlen(wchar_t *wcs, size_t lenmax)
@@ -17,6 +29,6 @@ size_t	ft_wcsrlen(wchar_t *wcs, size_t lenmax)
 		i++;
 	}
 	if (ret > lenmax)
-		ret -=size;
+		ret -= size;
 	return (ret);
 }

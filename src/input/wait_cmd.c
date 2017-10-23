@@ -6,7 +6,7 @@
 /*   By: vsporer <vsporer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/16 16:02:30 by vsporer           #+#    #+#             */
-/*   Updated: 2017/10/22 20:50:34 by vsporer          ###   ########.fr       */
+/*   Updated: 2017/10/23 13:19:05 by vsporer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,15 @@ static unsigned long	msh_prompt(char mode, char ***env)
 		ft_putstr("dquote> ");
 	else if (mode == -1)
 		ft_putstr("> ");
-	else
-		ft_putstr("\033[32m=>\033[0m ");
 	return (get_cursor_pos());
 }
 
-static char			*get_cmd_line(unsigned long curs)
+static char				*get_cmd_line(unsigned long curs, char *cmd)
 {
 	int		i;
 	char	buff[2];
-	char	*cmd;
 
 	i = 0;
-	cmd = NULL;
 	ft_bzero(buff, 2);
 	while (signal_value(-1) != 2 && read(0, buff, 1) > -1 && buff[0] != '\n')
 	{
@@ -70,25 +66,24 @@ static char			*get_cmd_line(unsigned long curs)
 		}
 		ft_bzero(buff, 2);
 	}
-	new_cmd_line(cmd, curs);
-	return (cmd);
+	return (new_cmd_line(cmd, curs));
 }
 
-static char			*get_cmd_quote(char *cmd, char quote)
+static char				*get_cmd_quote(char *cmd, char quote)
 {
 	char			*tmp;
 	unsigned long	curs;
 
 	tmp = NULL;
 	curs = msh_prompt(quote, NULL);
-	tmp = get_cmd_line((curs | NO_HISTORY));
+	tmp = get_cmd_line((curs | NO_HISTORY), tmp);
 	cmd = ft_strjoin_free(cmd, "\n", 1);
 	if (tmp)
 		cmd = ft_strjoin_free(cmd, tmp, 3);
 	return (cmd);
 }
 
-static void			exec_switch(char **cmdline, char ****env)
+static void				exec_switch(char **cmdline, char ****env)
 {
 	int		i;
 	char	**cmdtab;
@@ -114,17 +109,18 @@ static void			exec_switch(char **cmdline, char ****env)
 	ft_memdel((void**)&multicmd);
 }
 
-void				wait_cmd(char ****env)
+void					wait_cmd(char ****env)
 {
 	char			quote;
 	char			*cmdline;
 	unsigned long	curs;
 
+	cmdline = NULL;
 	quote = DEFAULT;
 	check_father();
 	set_term_param(CMD);
 	curs = msh_prompt(quote, *env);
-	cmdline = get_cmd_line(curs);
+	cmdline = get_cmd_line(curs, cmdline);
 	while (signal_value(-1) != SIGINT && (quote = check_escape(cmdline)))
 		cmdline = get_cmd_quote(cmdline, quote);
 	if (signal_value(-1) == SIGINT)
