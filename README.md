@@ -1,6 +1,6 @@
 # Minishell
 Minishell est le second projet de la branche système du cursus de l'école 42.
-Le but étant de coder en C un shell minimaliste. Voici les consignes a suivre:
+Le but étant de coder en C un shell minimaliste. Voici les consignes à suivre:
 
     Vous devez programmer un mini interpréteur de commandes UNIX.
     • Cet interpréteur doit afficher un prompt (un simple "$> " par exemple)
@@ -23,11 +23,11 @@ J'ai également ajouté la possibilité de modifier la ligne de commande en cour
 permettant de récupérer les lignes de commandes précédemment exécutées avec les flèches du clavier.
 Mon minishell gère aussi les quotes simples et doubles ainsi que les échappements utilisant le caractère '\'.
 # Compilation (gcc ou clang)
-(Attention: ce projet à été réalisé pour Mac OS X Sierra, il pourrait y avoir des erreurs de compilation sur d'autre systèmes)
+(Attention: ce projet à été réalisé pour Mac OS X Sierra, il pourrait y avoir des erreurs de compilation sur d'autres systèmes)
 Pour compiler le projet lancez simplement la commande:
 
     make
-a la racine du projet, l'exécutable 'minishell' sera créé dans ce même répertoire.
+à la racine du projet, l'exécutable 'minishell' sera créé dans ce même répertoire.
 # Utilisation
 Exécuter la commande:
 
